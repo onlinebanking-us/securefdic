@@ -1,0 +1,5564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SecureBank Online Banking</title>
+    <!-- FIXED HERE -->
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Favicon -->
+   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L85 25 L85 55 C85 75 70 90 50 95 C30 90 15 75 15 55 L15 25 L50 10Z' fill='%23d4a017' stroke='%23966f33' stroke-width='2'/%3E%3Ctext x='50' y='65' font-size='45' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E" />
+    <!-- ... rest of your code continues exactly as you had it ... -->
+     <!--update test-->
+
+    <style>
+      /* ===== RESET & BASE ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        background: #f5f7fa;
+        transition:
+          background-color 0.3s,
+          color 0.3s;
+      }
+
+      /* Dark Mode Variables */
+      body.dark-mode {
+        background: #1a1e2b;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .top-nav,
+      body.dark-mode .sidebar,
+      body.dark-mode .account-card,
+      body.dark-mode .action-card,
+      body.dark-mode .transaction-list,
+      body.dark-mode .transfer-form,
+      body.dark-mode .settings-panel,
+      body.dark-mode .service-card,
+      body.dark-mode .footer,
+      body.dark-mode .modal-content,
+      body.dark-mode .filter-btn,
+      body.dark-mode .contact-method,
+      body.dark-mode .chat-section,
+      body.dark-mode .faq-section {
+        background: #2a2f3f;
+        color: #e0e0e0;
+        border-color: #3a3f4f;
+      }
+
+      body.dark-mode .account-card .balance,
+      body.dark-mode .account-card .card-header,
+      body.dark-mode .account-card .account-name,
+      body.dark-mode .account-card .account-number,
+      body.dark-mode .transaction-details h4,
+      body.dark-mode .transaction-details p,
+      body.dark-mode .settings-option-left div h4,
+      body.dark-mode .settings-option-left div p,
+      body.dark-mode h2,
+      body.dark-mode h3,
+      body.dark-mode h4,
+      body.dark-mode p,
+      body.dark-mode span:not(.badge) {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .transaction-item {
+        border-bottom-color: #3a3f4f;
+      }
+
+      body.dark-mode .filter-btn:not(.active) {
+        background: #2a2f3f;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .form-group label,
+      body.dark-mode .settings-section h3 {
+        color: #d4a017;
+      }
+
+      body.dark-mode input,
+      body.dark-mode select,
+      body.dark-mode textarea {
+        background: #1e2333;
+        border-color: #3a3f4f;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode input:focus,
+      body.dark-mode select:focus,
+      body.dark-mode textarea:focus {
+        border-color: #d4a017;
+      }
+
+      body.dark-mode .amount-input span {
+        background: #1e2333;
+        color: #e0e0e0;
+        border-color: #3a3f4f;
+      }
+
+      body.dark-mode .security-badge {
+        background: #1e2333;
+      }
+
+      body.dark-mode .settings-option {
+        background: #1e2333;
+      }
+
+      body.dark-mode .settings-option:hover {
+        background: #2a2f3f;
+      }
+
+      body.dark-mode .modal-details {
+        background: #1e2333;
+      }
+
+      body.dark-mode .detail-label {
+        color: #aaa;
+      }
+
+      body.dark-mode .detail-value {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .footer-content {
+        color: #aaa;
+      }
+
+      body.dark-mode .chat-message {
+        background: #1e2333;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .chat-message.bot {
+        background: #2a2f3f;
+      }
+
+      body.dark-mode .faq-item {
+        background: #1e2333;
+      }
+
+      body.dark-mode .faq-item:hover {
+        background: #2a2f3f;
+      }
+
+      body.dark-mode .contact-method {
+        background: #1e2333;
+      }
+
+      body.dark-mode .contact-method:hover {
+        background: #2a2f3f;
+      }
+
+      /* ===== SCREEN MANAGEMENT ===== */
+      .screen {
+        display: none !important;
+        width: 100%;
+        min-height: 100vh;
+      }
+      .screen.active {
+        display: block !important;
+      }
+
+      /* ===== LOGIN SCREEN ===== */
+      #login-screen {
+        background: url("https://images.unsplash.com/photo-1547721064-da6cfb341d50?auto=format&fit=crop&w=1950&q=80")
+          center/cover fixed;
+        position: relative;
+      }
+      #login-screen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(212, 160, 23, 0.6),
+          rgba(150, 111, 51, 0.6)
+        );
+      }
+      .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      .login-card {
+        display: flex;
+        max-width: 1000px;
+        width: 100%;
+        background: transparent;
+        border-radius: 2rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Brand side */
+      .login-brand {
+        flex: 1;
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        padding: 3rem 2rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .brand-content i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+      .brand-content h1 {
+        font-size: 2.2rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+      }
+      .brand-features {
+        list-style: none;
+        margin-top: 2rem;
+      }
+      .brand-features li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1rem 0;
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      /* Form side */
+      .login-form-container {
+        flex: 1;
+        padding: 3rem 2.5rem;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 0 2rem 2rem 0;
+      }
+      .login-form-container h2 {
+        color: #966f33;
+        font-size: 2rem;
+        margin-bottom: 0.25rem;
+      }
+      .login-form-container > p {
+        color: #666;
+        margin-bottom: 2rem;
+      }
+
+      .input-group {
+        margin-bottom: 1.5rem;
+      }
+      .input-group label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #555;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+      .input-group label i {
+        color: #d4a017;
+        width: 1.2rem;
+      }
+      .input-group input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #ddd;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        transition: 0.2s;
+      }
+      .input-group input:focus {
+        border-color: #d4a017;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.2);
+      }
+
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1rem 0 1.5rem;
+      }
+      .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        cursor: pointer;
+      }
+      .forgot-link {
+        color: #d4a017;
+        text-decoration: none;
+      }
+      .forgot-link:hover {
+        text-decoration: underline;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(212, 160, 23, 0.3);
+      }
+      /* ADDED: Disabled button style for 3-second login */
+      .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .signup-prompt {
+        text-align: center;
+        margin: 1.5rem 0 1rem;
+        color: #666;
+      }
+      .signup-prompt a {
+        color: #d4a017;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .login-message {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+      }
+      .login-message.error {
+        background: #fee;
+        color: #c33;
+      }
+      .login-message.success {
+        background: #e8f5e8;
+        color: #2c6e2c;
+      }
+
+      /* ===== DASHBOARD ===== */
+      #dashboard {
+        background: #f5f7fa;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        transition: background-color 0.3s;
+      }
+
+      body.dark-mode #dashboard {
+        background: #1a1e2b;
+      }
+
+      /* Top navigation */
+      .top-nav {
+        background: white;
+        padding: 0.75rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        transition: background-color 0.3s;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #d4a017;
+        cursor: pointer;
+      }
+      .bank-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+      .bank-name {
+        font-weight: 600;
+        color: #966f33;
+        letter-spacing: 0.5px;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .live-clock {
+        background: rgba(212, 160, 23, 0.1);
+        color: #d4a017;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .greeting-user {
+        color: #d4a017;
+        font-weight: 600;
+      }
+      .profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+      }
+      .profile-pic img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: none;
+      }
+      .profile-pic.has-image img {
+        display: block;
+      }
+      .profile-pic.has-image .profile-initial {
+        display: none;
+      }
+      .profile-pic-upload {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        background: #d4a017;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 10px;
+        border: 2px solid white;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .profile-pic:hover .profile-pic-upload {
+        opacity: 1;
+      }
+      #profile-upload {
+        display: none;
+      }
+      .dark-mode-toggle {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #d4a017;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dark-mode-toggle:hover {
+        background: rgba(212, 160, 23, 0.1);
+      }
+      .icon-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #666;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+      .icon-btn:hover {
+        background: #f0f0f0;
+        color: #d4a017;
+      }
+
+      body.dark-mode .icon-btn {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .icon-btn:hover {
+        background: #3a3f4f;
+      }
+
+      .dashboard-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 280px;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.3s,
+          background-color 0.3s;
+        overflow-y: auto;
+      }
+      .nav-menu {
+        list-style: none;
+        padding: 1.5rem 0;
+      }
+      .nav-menu li {
+        margin: 0.25rem 0;
+      }
+      .nav-menu li a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 2rem;
+        color: #666;
+        text-decoration: none;
+        transition: 0.2s;
+        border-left: 3px solid transparent;
+      }
+      .nav-menu li a:hover {
+        background: rgba(212, 160, 23, 0.1);
+        color: #d4a017;
+      }
+      .nav-menu li.active a {
+        background: rgba(212, 160, 23, 0.15);
+        color: #d4a017;
+        border-left: 3px solid #d4a017;
+      }
+      .nav-menu li a i {
+        width: 1.8rem;
+        text-align: center;
+        font-size: 1.2rem;
+      }
+      .nav-section {
+        padding: 1rem 2rem 0.5rem;
+        color: #999;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+
+      body.dark-mode .nav-menu li a {
+        color: #aaa;
+      }
+
+      body.dark-mode .nav-section {
+        color: #666;
+      }
+
+      /* Main content */
+      .main-content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+        animation: fade 0.3s;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Main account card */
+      .main-account-card {
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+        padding: 4rem 3rem; /* ← INCREASED horizontal padding (left & right) */
+        border-radius: 1.5rem;
+        margin: 1.5rem 0;
+        width: 100%; /* ← Ensures it takes full width */
+        display: block;
+        box-sizing: border-box;
+      }
+      .account-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .main-balance {
+        display: block;
+        font-size: 2rem;
+        font-weight: 650;
+        margin: 0.5rem 0 1rem;
+      }
+      .account-details {
+        display: flex;
+        gap: 2rem;
+        font-size: 0.95rem;
+      }
+      .account-details span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Accounts grid */
+      .accounts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 1.5rem 0 2rem;
+      }
+      .account-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition:
+          0.2s,
+          background-color 0.3s;
+      }
+      .account-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+      .account-card.checking {
+        border-left: 4px solid #d4a017;
+      }
+      .account-card.savings {
+        border-left: 4px solid #28a745;
+      }
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #555;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      .balance {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      .account-name {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+      .account-number {
+        color: #999;
+        font-size: 0.8rem;
+      }
+
+      /* Quick actions */
+      .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+      .action-card {
+        background: white;
+        border: none;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition:
+          0.2s,
+          background-color 0.3s;
+      }
+      .action-card:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+      }
+      .action-card:hover i {
+        color: white;
+      }
+      .action-card i {
+        font-size: 1.8rem;
+        color: #d4a017;
+      }
+
+      /* Banking Services Grid */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .service-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          0.2s,
+          background-color 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      .service-card:hover {
+        transform: translateY(-5px);
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+      }
+      .service-card:hover i {
+        color: white;
+      }
+      .service-card:hover p {
+        color: white;
+      }
+      .service-card i {
+        font-size: 2.5rem;
+        color: #d4a017;
+        margin-bottom: 1rem;
+      }
+      .service-card h4 {
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      .service-card p {
+        color: #666;
+        font-size: 0.85rem;
+      }
+
+      body.dark-mode .service-card h4 {
+        color: #e0e0e0;
+      }
+
+      /* Transaction lists */
+      .transaction-list {
+        background: white;
+        border-radius: 1rem;
+        padding: 0.5rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s;
+      }
+      .transaction-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .transaction-item:hover {
+        background: #f9f9f9;
+      }
+      .transaction-item:last-child {
+        border-bottom: none;
+      }
+      .transaction-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .transaction-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .transaction-icon.incoming {
+        background: #e8f5e8;
+        color: #28a745;
+      }
+      .transaction-icon.outgoing {
+        background: #fee7e7;
+        color: #dc3545;
+      }
+      .transaction-icon.pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .transaction-details h4 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .transaction-details p {
+        color: #888;
+        font-size: 0.85rem;
+      }
+      .transaction-amount {
+        font-weight: 600;
+      }
+      .transaction-amount.incoming {
+        color: #28a745;
+      }
+      .transaction-amount.outgoing {
+        color: #dc3545;
+      }
+      .pending-badge {
+        background: #fff3cd;
+        color: #856404;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+      }
+
+      body.dark-mode .transaction-item:hover {
+        background: #1e2333;
+      }
+
+      /* Transfer form */
+      .transfer-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        max-width: 600px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s;
+      }
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-weight: 500;
+      }
+      .form-group select,
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        transition:
+          background-color 0.3s,
+          border-color 0.3s;
+      }
+      .form-group select:focus,
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: #d4a017;
+        outline: none;
+      }
+      .amount-input {
+        display: flex;
+        align-items: center;
+        border: 2px solid #e0e0e0;
+        border-radius: 0.75rem;
+        overflow: hidden;
+      }
+      .amount-input span {
+        padding: 0.75rem 1rem;
+        background: #f5f7fa;
+        border-right: 2px solid #e0e0e0;
+        font-weight: 600;
+        color: #666;
+      }
+      .amount-input input {
+        border: none;
+        flex: 1;
+      }
+      .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 1rem;
+        border-left: 4px solid #d4a017;
+      }
+      .security-badge i {
+        font-size: 2rem;
+        color: #d4a017;
+      }
+      .security-badge-text h4 {
+        color: #333;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+      }
+      .security-badge-text p {
+        color: #666;
+        font-size: 0.85rem;
+      }
+      .message {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 0.5rem;
+      }
+      .message.success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .message.error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .message.info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+
+      /* Filter bar */
+      .filter-bar {
+        display: flex;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 0.5rem 1.5rem;
+        border: none;
+        background: white;
+        border-radius: 2rem;
+        cursor: pointer;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition:
+          0.2s,
+          background-color 0.3s;
+      }
+      .filter-btn.active {
+        background: #d4a017;
+        color: white;
+      }
+      .filter-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Cards grid - Realistic Bank Cards with Giraffe on first card */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .card {
+        padding: 1.5rem;
+        border-radius: 1.2rem;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow:
+          0 10px 20px rgba(0, 0, 0, 0.2),
+          0 6px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 20px 30px rgba(212, 160, 23, 0.2),
+          0 8px 12px rgba(0, 0, 0, 0.2);
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -20%;
+        width: 150%;
+        height: 200%;
+        background: linear-gradient(
+          to bottom right,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 50%,
+          transparent 100%
+        );
+        transform: rotate(25deg);
+        pointer-events: none;
+      }
+
+      /* Physical card with giraffe background */
+      .card.physical {
+        background:
+          linear-gradient(145deg, rgba(11, 26, 46, 0.7), rgba(26, 44, 62, 0.7)),
+          url("https://images.unsplash.com/photo-1547721064-da6cfb341d50?auto=format&fit=crop&w=1950&q=80");
+        background-size: cover;
+        background-position: center 30%;
+        color: white;
+        position: relative;
+      }
+      .card.physical::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60px;
+        height: 40px;
+        background: linear-gradient(145deg, #d4a017, #966f33);
+        border-radius: 0 0 0 20px;
+        opacity: 0.4;
+      }
+
+      /* Virtual card */
+      .card.virtual {
+        background: linear-gradient(145deg, #2a1e1a, #3e2c1a);
+        color: white;
+      }
+      .card.virtual .card-chip i {
+        color: #60a5fa;
+      }
+
+      .card-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .card-brand i {
+        color: #d4a017;
+        font-size: 1.3rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      .card-chip {
+        position: relative;
+        z-index: 1;
+      }
+      .card-chip i {
+        font-size: 2.5rem;
+        color: #d4a017;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      .card-number {
+        font-family: "Courier New", monospace;
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.5rem;
+        border-radius: 8px;
+        text-align: center;
+        backdrop-filter: blur(2px);
+      }
+      .card-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+      .card-holder,
+      .card-expiry {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        backdrop-filter: blur(2px);
+      }
+      .card-holder .label,
+      .card-expiry .label {
+        font-size: 0.6rem;
+        opacity: 0.7;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .card-holder .value,
+      .card-expiry .value {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+      .card-status {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        backdrop-filter: blur(2px);
+        position: relative;
+        z-index: 1;
+        width: fit-content;
+      }
+      .card-status.active {
+        color: #4ade80;
+      }
+      .card-status.inactive {
+        color: #fbbf24;
+      }
+      .card-type {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 800;
+        font-style: italic;
+        opacity: 0.3;
+        color: white;
+        z-index: 0;
+      }
+
+      /* Settings Panel */
+      .settings-panel {
+        background: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s;
+      }
+      .settings-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+      }
+      .settings-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .settings-section h3 {
+        color: #966f33;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .settings-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .settings-option:hover {
+        background: #f0f0f0;
+      }
+      .settings-option-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .settings-option-left i {
+        width: 2rem;
+        color: #d4a017;
+        font-size: 1.2rem;
+      }
+      .settings-option-left div h4 {
+        color: #333;
+        margin-bottom: 0.25rem;
+      }
+      .settings-option-left div p {
+        color: #666;
+        font-size: 0.85rem;
+      }
+      .toggle-switch {
+        width: 50px;
+        height: 24px;
+        background: #ddd;
+        border-radius: 12px;
+        position: relative;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .toggle-switch.active {
+        background: #d4a017;
+      }
+      .toggle-slider {
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: 0.2s;
+      }
+      .toggle-switch.active .toggle-slider {
+        left: 28px;
+      }
+
+      body.dark-mode .settings-section {
+        border-bottom-color: #3a3f4f;
+      }
+
+      /* Advanced Customer Care Styles */
+      .care-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .care-header {
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .care-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: white;
+      }
+
+      .care-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        color: white;
+      }
+
+      .care-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .contact-method {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .contact-method:hover {
+        transform: translateY(-5px);
+        background: linear-gradient(135deg, #d4a017, #966f33);
+        color: white;
+      }
+
+      .contact-method:hover i {
+        color: white;
+      }
+
+      .contact-method:hover h4 {
+        color: white;
+      }
+
+      .contact-method:hover p {
+        color: white;
+      }
+
+      .contact-method:hover small {
+        color: white;
+        opacity: 0.9;
+      }
+
+      .contact-method i {
+        font-size: 2.5rem;
+        color: #d4a017;
+        margin-bottom: 1rem;
+      }
+
+      .contact-method h4 {
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+
+      .contact-method p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .contact-method small {
+        color: #999;
+        font-size: 0.8rem;
+      }
+
+      /* Email link styling */
+      .email-link {
+        color: #d4a017;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .email-link:hover {
+        text-decoration: underline;
+        color: #966f33;
+      }
+
+      /* Chat Section */
+      .chat-section {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .chat-section h3 {
+        color: #333;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .chat-section h3 i {
+        color: #d4a017;
+      }
+
+      .chat-messages {
+        height: 250px;
+        overflow-y: auto;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .chat-message {
+        margin-bottom: 1rem;
+        max-width: 80%;
+        clear: both;
+      }
+
+      .chat-message.user {
+        float: right;
+      }
+
+      .chat-message.bot {
+        float: left;
+      }
+
+      .chat-message-content {
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+        word-wrap: break-word;
+      }
+
+      .chat-message.user .chat-message-content {
+        background: #d4a017;
+        color: white;
+      }
+
+      .chat-message.bot .chat-message-content {
+        background: #e9ecef;
+        color: #333;
+      }
+
+      .chat-message-sender {
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: #666;
+      }
+
+      .chat-message.user .chat-message-sender {
+        color: rgba(255, 255, 255, 0.8);
+        text-align: right;
+      }
+
+      .chat-message-time {
+        font-size: 0.6rem;
+        color: #999;
+        margin-top: 0.25rem;
+        text-align: right;
+      }
+
+      .chat-input {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .chat-input input {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+      }
+
+      .chat-input input:focus {
+        border-color: #d4a017;
+        outline: none;
+      }
+
+      .chat-input button {
+        padding: 0.75rem 1.5rem;
+        background: #d4a017;
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+        white-space: nowrap;
+      }
+
+      .chat-input button:hover {
+        background: #966f33;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .faq-section h3 {
+        color: #333;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .faq-section h3 i {
+        color: #d4a017;
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      .faq-item {
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .faq-item:hover {
+        background: #f0f0f0;
+      }
+
+      .faq-item h4 {
+        color: #333;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .faq-item h4 i {
+        color: #d4a017;
+        font-size: 1rem;
+      }
+
+      .faq-item p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-left: 1.5rem;
+        display: none;
+      }
+
+      .faq-item.active p {
+        display: block;
+      }
+
+      /* Footer */
+      .footer {
+        background: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        transition: background-color 0.3s;
+      }
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .footer-content i {
+        color: #d4a017;
+        margin-right: 0.4rem;
+      }
+
+      /* Modals */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        max-width: 900px;
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: slideUp 0.3s;
+        transition: background-color 0.3s;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #999;
+        z-index: 10;
+      }
+      .close-modal:hover {
+        color: #333;
+      }
+      .modal-icon {
+        font-size: 3rem;
+        color: #d4a017;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .modal h3 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      .modal p {
+        text-align: center;
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+      .modal-details {
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .modal-details .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+      }
+      .modal-details .detail-row:last-child {
+        border-bottom: none;
+      }
+      .modal-details .detail-label {
+        color: #666;
+        font-weight: 500;
+      }
+      .modal-details .detail-value {
+        color: #333;
+        font-weight: 600;
+      }
+      .modal-close {
+        background: #d4a017;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      body.dark-mode .close-modal {
+        color: #aaa;
+      }
+
+      body.dark-mode .close-modal:hover {
+        color: #fff;
+      }
+
+      body.dark-mode .modal h3 {
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .modal p {
+        color: #aaa;
+      }
+
+      body.dark-mode .chat-message.bot .chat-message-content {
+        background: #2a2f3f;
+        color: #e0e0e0;
+      }
+
+      body.dark-mode .chat-message.bot .chat-message-sender {
+        color: #aaa;
+      }
+
+      /* Mobile responsiveness - Enhanced for chat */
+      @media (max-width: 768px) {
+        .login-card {
+          flex-direction: column;
+          border-radius: 1.5rem;
+        }
+        .login-brand {
+          border-radius: 1.5rem 1.5rem 0 0;
+          padding: 2rem;
+        }
+        .login-form-container {
+          border-radius: 0 0 1.5rem 1.5rem;
+        }
+        .menu-toggle {
+          display: block;
+        }
+        .sidebar {
+          position: fixed;
+          left: 0;
+          top: 60px;
+          height: calc(100vh - 60px);
+          transform: translateX(-100%);
+          z-index: 100;
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .nav-right .greeting-user,
+        .bank-name {
+          display: none;
+        }
+        .footer-content {
+          flex-direction: column;
+          text-align: center;
+        }
+        .care-grid {
+          grid-template-columns: 1fr;
+        }
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+        .modal-content {
+          width: 95%;
+          padding: 1.5rem;
+        }
+
+        /* Mobile responsive chat improvements */
+        .chat-message {
+          max-width: 90%;
+        }
+
+        .chat-input {
+          flex-direction: column;
+        }
+
+        .chat-input input {
+          width: 100%;
+        }
+
+        .chat-input button {
+          width: 100%;
+        }
+
+        .chat-messages {
+          height: 200px;
+        }
+      }
+
+      /* Extra small devices */
+      @media (max-width: 480px) {
+        .chat-message {
+          max-width: 95%;
+        }
+
+        .chat-message-content {
+          font-size: 0.9rem;
+          padding: 0.6rem 0.8rem;
+        }
+
+        .chat-message-sender {
+          font-size: 0.65rem;
+        }
+
+        .chat-message-time {
+          font-size: 0.55rem;
+        }
+      }
+
+      /* Shake animation */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-5px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      /* Ring animation for phone */
+      @keyframes ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        10% {
+          transform: rotate(15deg);
+        }
+        20% {
+          transform: rotate(-15deg);
+        }
+        30% {
+          transform: rotate(10deg);
+        }
+        40% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(5deg);
+        }
+        60% {
+          transform: rotate(-5deg);
+        }
+        70% {
+          transform: rotate(2deg);
+        }
+        80% {
+          transform: rotate(-2deg);
+        }
+        90% {
+          transform: rotate(1deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      .ring-animation {
+        animation: ring 0.5s ease-in-out;
+      }
+
+
+      /* ===== FIX FOR EMAIL ON SMALL SCREENS ===== */
+@media (max-width: 768px) {
+  .settings-option-left div p {
+    font-size: 0.75rem !important;
+    word-break: break-all !important;      /* Breaks long email to next line */
+    white-space: normal !important;         /* Allows wrapping */
+    line-height: 1.3 !important;
+    max-width: 100% !important;
+  }
+  
+  .settings-option-left div h4 {
+    font-size: 0.9rem !important;
+  }
+  
+  .settings-option {
+    padding: 0.8rem !important;
+    flex-wrap: wrap !important;             /* Allows content to wrap */
+  }
+  
+  .settings-option-left {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .settings-option-left div p {
+    font-size: 0.7rem !important;
+    word-break: break-all !important;
+  }
+}
+
+
+      /* ... all your existing CSS code ... */
+
+/* ===== YOUR NEW CODE - ADD THIS AT THE END ===== */
+.transaction-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+.transaction-info {
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.transaction-details {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.transaction-details h4 {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 2px !important;
+}
+
+.transaction-details p {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 0.8rem !important;
+  color: #666 !important;
+}
+
+.transaction-amount {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-weight: 600 !important;
+  text-align: right !important;
+}
+
+.pending-badge {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+/* ===== END OF NEW CODE ===== */
+
+
+/* ===== FIX FOR LOGOUT BUTTON ON MOBILE ===== */
+@media (max-width: 768px) {
+  /* Make the top nav more compact */
+  .top-nav {
+    padding: 0.5rem 0.8rem !important;
+  }
+  
+  /* Hide non-essential items on mobile to make space */
+  .live-clock {
+    display: none !important;  /* Hide clock on mobile */
+  }
+  
+  .greeting-user {
+    display: none !important;  /* Hide greeting on mobile */
+  }
+  
+  /* Make icons slightly smaller */
+  .dark-mode-toggle,
+  .icon-btn,
+  #customer-care,
+  #logout-btn {
+    font-size: 1.1rem !important;
+    padding: 0.3rem !important;
+  }
+  
+  /* Ensure logout button is visible */
+  #logout-btn {
+    display: flex !important;
+    margin-left: auto !important;
+  }
+  
+  /* Adjust spacing */
+  .nav-right {
+    gap: 0.3rem !important;
+  }
+  
+  .profile-pic {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* For very small phones */
+@media (max-width: 480px) {
+  .bank-name {
+    display: none !important;  /* Hide bank name on very small screens */
+  }
+  
+  .dark-mode-toggle,
+  .icon-btn,
+  #customer-care,
+  #logout-btn {
+    font-size: 1rem !important;
+    padding: 0.25rem !important;
+  }
+
+  
+}
+
+/* ===== MOBILE RESPONSIVE GREETING ===== */
+@media (max-width: 768px) {
+  #welcome-heading {
+    font-size: 1.2rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+  
+  .greeting-user {
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #welcome-heading {
+    font-size: 1rem !important;
+  }
+  
+  .greeting-user {
+    display: none !important; /* Hide on very small screens if needed */
+  }
+}
+
+</style>
+    </style>
+  </head>
+  <body>
+    <!-- LOGIN SCREEN – active by default -->
+    <div id="login-screen" class="screen active">
+      <div class="login-wrapper">
+        <div class="login-card">
+          <!-- Left brand side -->
+          <div class="login-brand">
+            <div class="brand-content">
+              <i class="fas fa-university"></i>
+              <h1><b><strong>SecureBank</strong></b></h1>
+              <br>
+              <p>Trust · Legacy · Excellence</p>
+              <ul class="brand-features">
+                <li><i class="fas fa-shield-alt"></i> 256-bit Encryption</li>
+                <li><i class="fas fa-mobile-alt"></i> Mobile Banking</li>
+                <li><i class="fas fa-clock"></i> 24/7 Concierge</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Right form side -->
+          <div class="login-form-container">
+            <h2>Welcome Back</h2>
+            <p>Sign in to your account</p>
+            <form id="login-form">
+              <div class="input-group">
+                <label for="username"
+                  ><i class="fas fa-user"></i> Username</label
+                >
+                <input
+                  type="text"
+                  id="username"
+                  placeholder="Enter your username"
+                  value=""
+                  autocomplete="off"
+                />
+              </div>
+              <div class="input-group">
+                <label for="password"
+                  ><i class="fas fa-lock"></i> Password</label
+                >
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  value=""
+                />
+              </div>
+              <div class="form-options">
+                <label class="checkbox">
+                  <input type="checkbox" id="remember-me" /> Remember me
+                </label>
+                <a href="#" id="forgot-password" class="forgot-link"
+                  >Forgot Password?</a
+                >
+              </div>
+              <button type="submit" class="btn btn-primary" id="login-btn">
+                <span>Sign In</span> <i class="fas fa-arrow-right"></i>
+              </button>
+            </form>
+            <p class="signup-prompt">
+              Don't have an account? <a href="#" id="signup-link">Sign Up</a>
+            </p>
+            <div id="login-message" class="login-message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="screen">
+      <!-- Top navigation -->
+      <nav class="top-nav">
+        <div class="nav-left">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="bank-icon"><i class="fas fa-university"></i></div>
+          <span class="bank-name">SecureBank</span>
+        </div>
+        <div class="nav-right">
+          <span class="live-clock" id="live-clock"></span>
+          <span class="greeting-user" id="greeting-user"></span>
+          <button
+            class="dark-mode-toggle"
+            id="dark-mode-toggle"
+            aria-label="Toggle Dark Mode"
+          >
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="profile-pic" id="profile-pic">
+            <span class="profile-initial">JD</span>
+            <img id="profile-image" src="" alt="Profile" />
+            <div class="profile-pic-upload" id="profile-upload-btn">
+              <i class="fas fa-camera"></i>
+            </div>
+          </div>
+          <input type="file" id="profile-upload" accept="image/*" />
+          <button
+            class="icon-btn"
+            id="customer-care"
+            aria-label="Customer Care"
+          >
+            <i class="fas fa-headset"></i>
+          </button>
+          <button class="icon-btn" id="logout-btn" aria-label="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Customer Care Modal -->
+      <div id="care-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <div class="care-container">
+            <div class="care-header">
+              <i class="fas fa-headset fa-3x"></i>
+              <h2>Customer Care Center</h2>
+              <p>How can we help you today? - Mabel is here to assist!</p>
+            </div>
+            <div class="care-grid">
+              <div class="contact-method" onclick="initiateCall()">
+                <i class="fas fa-phone-alt"></i>
+                <h4>24/7 Phone Support</h4>
+                <p>1-800-SECUREBK</p>
+                <small>Average wait: 2 minutes</small>
+              </div>
+              <div class="contact-method" onclick="initiateEmail()">
+                <i class="fas fa-envelope"></i>
+                <h4>Email Support</h4>
+                <p>
+                  <a
+                    href="mailto:support@securebank.com"
+                    class="email-link"
+                    onclick="event.stopPropagation()"
+                    >support@securebank.com</a
+                  >
+                </p>
+                <small>Response within 4 hours</small>
+              </div>
+              <div class="contact-method" onclick="initiateChat()">
+                <i class="fas fa-comment-dots"></i>
+                <h4>Live Chat</h4>
+                <p>Chat with Mabel now</p>
+                <small>Available 24/7</small>
+              </div>
+            </div>
+            <div class="chat-section">
+              <h3><i class="fas fa-comments"></i> Chat with Mabel</h3>
+              <div class="chat-messages" id="chat-messages">
+                <div class="chat-message bot">
+                  <div class="chat-message-sender">Mabel • Customer Care</div>
+                  <div class="chat-message-content">
+                    Hello! I'm Mabel, your personal banking assistant. How can I
+                    help you today?
+                  </div>
+                  <div class="chat-message-time">Just now</div>
+                </div>
+              </div>
+              <div class="chat-input">
+                <input
+                  type="text"
+                  id="chat-input"
+                  placeholder="Type your message..."
+                  onkeypress="handleChatKeyPress(event)"
+                />
+                <button onclick="sendChatMessage()">
+                  <i class="fas fa-paper-plane"></i> Send
+                </button>
+              </div>
+            </div>
+            <div class="faq-section">
+              <h3>
+                <i class="fas fa-question-circle"></i> Frequently Asked
+                Questions
+              </h3>
+              <div class="faq-grid">
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                  <h4>
+                    <i class="fas fa-chevron-right"></i> How do I reset my
+                    password?
+                  </h4>
+                  <p>
+                    Click "Forgot Password" on the login page. You'll receive an
+                    email with reset instructions. Need help? Contact Mabel at
+                    <a
+                      href="mailto:support@securebank.com"
+                      class="email-link"
+                      onclick="event.stopPropagation()"
+                      >support@securebank.com</a
+                    >
+                  </p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                  <h4>
+                    <i class="fas fa-chevron-right"></i> What are your routing
+                    numbers?
+                  </h4>
+                  <p>
+                    Domestic wire: 021000021 · International: 021000021 · ACH:
+                    021000021. For international transfers, please use
+                    <a
+                      href="mailto:support@securebank.com"
+                      class="email-link"
+                      onclick="event.stopPropagation()"
+                      >support@securebank.com</a
+                    >
+                  </p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                  <h4>
+                    <i class="fas fa-chevron-right"></i> How do I report a lost
+                    card?
+                  </h4>
+                  <p>
+                    Call 1-800-SECUREBK immediately to block your card. You
+                    can also email Mabel at
+                    <a
+                      href="mailto:support@securebank.com"
+                      class="email-link"
+                      onclick="event.stopPropagation()"
+                      >support@securebank.com</a
+                    >
+                    for assistance.
+                  </p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                  <h4>
+                    <i class="fas fa-chevron-right"></i> What are your business
+                    hours?
+                  </h4>
+                  <p>
+                    24/7 support always available. Branches open Mon-Fri
+                    9am-5pm, Sat 10am-2pm. Email Mabel anytime at
+                    <a
+                      href="mailto:support@securebank.com"
+                      class="email-link"
+                      onclick="event.stopPropagation()"
+                      >support@securebank.com</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn modal-close">Close</button>
+        </div>
+      </div>
+
+      <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+          <ul class="nav-menu">
+            <div class="nav-section">Main</div>
+            <li class="active">
+              <a href="#" data-view="overview"
+                ><i class="fas fa-home"></i> Overview</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="transactions"
+                ><i class="fas fa-history"></i> Transactions</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="transfer"
+                ><i class="fas fa-exchange-alt"></i> Transfer</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="cards"
+                ><i class="fas fa-credit-card"></i> Cards</a
+              >
+            </li>
+            <div class="nav-section">Banking Services</div>
+            <li>
+              <a href="#" data-view="heloc"
+                ><i class="fas fa-home"></i> HELOC</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="tax-refund"
+                ><i class="fas fa-file-invoice-dollar"></i> Tax Refund</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="loans"
+                ><i class="fas fa-hand-holding-usd"></i> Loans</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="investments"
+                ><i class="fas fa-chart-line"></i> Investments</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="mortgage"
+                ><i class="fas fa-building"></i> Mortgage</a
+              >
+            </li>
+            <div class="nav-section">Account</div>
+            <li>
+              <a href="#" data-view="settings"
+                ><i class="fas fa-cog"></i> Settings</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="profile"
+                ><i class="fas fa-user-circle"></i> Profile</a
+              >
+            </li>
+            <li>
+              <a href="#" data-view="statements"
+                ><i class="fas fa-file-pdf"></i> Statements</a
+              >
+            </li>
+          </ul>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+          <!-- Overview -->
+          <section id="overview-view" class="view active">
+            <h2 id="welcome-heading">Welcome back</h2>
+            <div class="main-account-card">
+              <span class="account-label">Primary Checking</span>
+              <span class="main-balance" id="checking-balance"
+                >$32,560.12</span
+              >
+              <div class="account-details">
+                <span
+                  ><i class="fas fa-user"></i>
+                  <span id="account-holder-name">JOSHUA M DEMARS</span></span
+                > 
+                <span
+                  ><i class="fas fa-credit-card"></i> Account: •••• 4582</span
+                >
+              </div>
+            </div>
+
+            <h3>Your Accounts</h3>
+            <div class="accounts-grid">
+              <div
+                class="account-card checking"
+                onclick="showAccountDetails('checking')"
+              >
+                <div class="card-header">
+                  <i class="fas fa-university"></i> Checking
+                </div>
+                <span class="balance" id="checking-balance-card"
+                  >$32,560.12</span
+                  
+                >
+                <div class="account-name">
+                  <i class="fas fa-user-circle"></i> Joshua M Demars
+                </div>
+                <div class="account-number">•••• 4582</div>
+              </div>
+              <div
+                class="account-card savings"
+                onclick="showAccountDetails('savings')"
+              >
+                <div class="card-header">
+                  <i class="fas fa-piggy-bank"></i> Savings
+                </div>
+                <span class="balance" id="savings-balance">$3,745.00</span>
+                <div class="account-name">
+                  <i class="fas fa-user-circle"></i> Joshua M Demars
+                </div>
+                <div class="account-number">•••• 3391</div>
+              </div>
+            </div>
+
+            <h3>Banking Services</h3>
+            <div class="services-grid">
+              <div class="service-card" onclick="showServiceModal('heloc')">
+                <i class="fas fa-home"></i>
+                <h4>HELOC</h4>
+                <p>Home Equity Line of Credit up to $500K</p>
+              </div>
+              <div
+                class="service-card"
+                onclick="showServiceModal('tax-refund')"
+              >
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h4>Tax Refund</h4>
+                <p>Get your refund up to 5 days early</p>
+              </div>
+              <div class="service-card" onclick="showServiceModal('loans')">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h4>Personal Loans</h4>
+                <p>Rates as low as 5.99% APR</p>
+              </div>
+              <div
+                class="service-card"
+                onclick="showServiceModal('investments')"
+              >
+                <i class="fas fa-chart-line"></i>
+                <h4>Investments</h4>
+                <p>Wealth management & advisory</p>
+              </div>
+              <div class="service-card" onclick="showServiceModal('mortgage')">
+                <i class="fas fa-building"></i>
+                <h4>Mortgage</h4>
+                <p>Home buying & refinancing</p>
+              </div>
+              <div class="service-card" onclick="showServiceModal('credit')">
+                <i class="fas fa-credit-card"></i>
+                <h4>Credit Cards</h4>
+                <p>Premium rewards & benefits</p>
+              </div>
+            </div>
+
+            <h3>Quick Actions</h3>
+            <div class="quick-actions">
+              <button class="action-card" id="transfer-menu-btn">
+  <i class="fas fa-exchange-alt"></i> Transfer
+</button>
+              <button class="action-card" id="deposit-check-btn">
+  <i class="fas fa-money-bill-wave"></i> Deposit Check
+</button>
+              <button class="action-card" data-view="cards">
+                <i class="fas fa-credit-card"></i> Manage Cards
+              </button>
+              <button class="action-card" id="pay-bills">
+                <i class="fas fa-file-invoice"></i> Pay Bills
+              </button>
+              <button class="action-card" id="customer-care-quick">
+                <i class="fas fa-headset"></i> Customer Care
+              </button>
+            </div>
+
+            <h3>Recent Activity</h3>
+            <div class="transaction-list" id="recent-transactions"></div>
+          </section>
+         
+             <!-- Transfer -->
+<section id="transfer-view" class="view">
+  <h2>Transfer</h2>
+  <form id="transfer-form" class="transfer-form">
+    <div class="form-group">
+      <label>From Account</label>
+      <select id="from-account">
+        <option value="checking">
+          Checking (••••4582) – $<span id="checking-balance-display">32,
+            560.12</span>
+        </option>
+        <option value="savings">
+          Savings (••••3391) – $<span id="savings-balance-display">3,745.00</span>
+        </option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Recipient Account Number</label>
+      <input type="text" id="to-account" placeholder="Enter account number" required />
+    </div>
+    
+    <div class="form-group">
+      <label>Recipient Bank Name</label>
+      <input type="text" id="bank-name" placeholder="Enter bank name" required />
+    </div>
+    
+    <div class="form-group">
+      <label>Recipient Routing Number</label>
+      <input type="text" id="routing-number" placeholder="Enter routing number" required />
+    </div>
+    
+    <div class="form-group">
+      <label>Recipient Name</label>
+      <input type="text" id="account-name" placeholder="Enter recipient name" required />
+    </div>
+    
+    <div class="form-group">
+      <label>Amount ($)</label>
+      <div class="amount-input">
+        <span>$</span>
+        <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" required />
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Description (optional)</label>
+      <input type="text" id="description" placeholder="e.g., Rent" />
+    </div>
+    
+    <div class="security-badge">
+      <i class="fas fa-shield-alt"></i>
+      <div class="security-badge-text">
+        <h4>🔒 Bank-Grade Security</h4>
+        <p>Your transfer is encrypted with 256-bit SSL and monitored 24/7</p>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary transfer-btn" id="send-money-btn">
+      <i class="fas fa-paper-plane"></i> Send Money
+    </button>
+  </form>
+  <div id="transfer-message" class="message"></div>
+</section>
+          <!-- Transactions -->
+          <section id="transactions-view" class="view">
+            <h2>Transaction History</h2>
+            <div class="filter-bar">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="incoming">
+                Incoming
+              </button>
+              <button class="filter-btn" data-filter="outgoing">
+                Outgoing
+              </button>
+              <button class="filter-btn" data-filter="pending">Pending</button>
+            </div>
+            <div class="transaction-list" id="all-transactions"></div>
+          </section>
+
+          <!-- Cards -->
+          <section id="cards-view" class="view">
+            <h2>Your Cards</h2>
+            <div class="cards-grid">
+              <!-- Physical Card with Giraffe Background -->
+              <div class="card physical" onclick="showCardDetails('physical')">
+                <div class="card-brand">
+                  <i class="fas fa-university"></i><span>SecureBank</span>
+                </div>
+                <div class="card-chip"><i class="fas fa-microchip"></i></div>
+                <div class="card-number">4582 1735 5678 9012</div>
+                <div class="card-details">
+                  <div class="card-holder">
+                    <span class="label">Card Holder</span
+                    ><span class="value">JOSHUA M DEMARS</span>
+                  </div>
+                  <div class="card-expiry">
+                    <span class="label">Expires</span
+                    ><span class="value">05/26</span>
+                  </div>
+                </div>
+                <div class="card-status active">
+                  <i class="fas fa-check-circle"></i> Active
+                </div>
+                <div class="card-type">VISA</div>
+              </div>
+
+              <!-- Virtual Card -->
+              <div class="card virtual" onclick="showCardDetails('virtual')">
+                <div class="card-brand">
+                  <i class="fas fa-university"></i><span>SecureBank</span>
+                </div>
+                <div class="card-chip"><i class="fas fa-wifi"></i></div>
+                <div class="card-number">VIRTUAL •••• 7723</div>
+                <div class="card-details">
+                  <div class="card-holder">
+                    <span class="label">Card Holder</span
+                    ><span class="value">JOSHUA M DEMARS</span>
+                  </div> 
+                  <div class="card-expiry">
+                    <span class="label">Expires</span
+                    ><span class="value">02/26</span>
+                  </div>
+                </div>
+                <div class="card-status inactive">
+                  <i class="fas fa-clock"></i> Inactive
+                </div>
+                <div class="card-type">Virtual</div>
+              </div>
+            </div>
+            <div
+              style="
+                margin-top: 2rem;
+                background: white;
+                padding: 1rem;
+                border-radius: 1rem;
+              "
+            >
+              <p style="color: #666">
+                <i class="fas fa-info-circle" style="color: #d4a017"></i> Tap
+                card to view details including CVV
+              </p>
+            </div>
+          </section>
+
+          <!-- HELOC -->
+          <section id="heloc-view" class="view">
+            <h2>Home Equity Line of Credit</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-home"></i> Your HELOC</h3>
+                <div class="settings-option" onclick="showHelocDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-piggy-bank"></i>
+                    <div>
+                      <h4>Available Credit</h4>
+                      <p>$250,000 of $650,000</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-option" onclick="showHelocDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-percent"></i>
+                    <div>
+                      <h4>Current Rate</h4>
+                      <p>4.25% APR (Variable)</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-option" onclick="showHelocDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                      <h4>Next Payment</h4>
+                      <p>$1,250 due on 03/15/2026</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-cog"></i> Actions</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Apply for HELOC increase feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-plus-circle"></i>
+                    <div>
+                      <h4>Request Increase</h4>
+                      <p>Apply for a credit line increase</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Make a HELOC draw feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <div>
+                      <h4>Make a Draw</h4>
+                      <p>Access your available credit</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'View HELOC statements feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>
+                      <h4>Statements</h4>
+                      <p>View and download statements</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tax Refund -->
+          <section id="tax-refund-view" class="view">
+            <h2>Tax Refund</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3>
+                  <i class="fas fa-file-invoice-dollar"></i> Tax Refund Status
+                </h3>
+                <div class="settings-option" onclick="showTaxRefundDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-hourglass-half"></i>
+                    <div>
+                      <h4>2025 Tax Refund</h4>
+                      <p>$38,847.93 - Processing</p>
+                    </div>
+                  </div>
+                  <span class="pending-badge">Pending</span>
+                </div>
+                <div class="settings-option" onclick="showTaxRefundDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                      <h4>2024 Tax Refund</h4>
+                      <p>$21,430.50 - Deposited 03/15/2025</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-option" onclick="showTaxRefundDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                      <h4>2023 Tax Refund</h4>
+                      <p>$3,892.75 - Deposited 03/10/2024</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-cog"></i> Tax Services</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Early refund feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                      <h4>Early Refund</h4>
+                      <p>Get your refund up to 5 days early</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Tax estimation feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                      <h4>Tax Estimator</h4>
+                      <p>Estimate your next refund</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Tax documents feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                      <h4>Tax Documents</h4>
+                      <p>View 1099, 1098 forms</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Loans -->
+          <section id="loans-view" class="view">
+            <h2>Loans</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-hand-holding-usd"></i> Your Loans</h3>
+                <div class="settings-option" onclick="showLoanDetails('auto')">
+                  <div class="settings-option-left">
+                    <i class="fas fa-car"></i>
+                    <div>
+                      <h4>Auto Loan</h4>
+                      <p>$12,450 remaining · 3.9% APR</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="showLoanDetails('personal')"
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-user-graduate"></i>
+                    <div>
+                      <h4>Personal Loan</h4>
+                      <p>$5,230 remaining · 5.9% APR</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-plus-circle"></i> Apply for New Loan</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Auto loan application coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-car"></i>
+                    <div>
+                      <h4>Auto Loan</h4>
+                      <p>Rates starting at 3.99% APR</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Personal loan application coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-home"></i>
+                    <div>
+                      <h4>Personal Loan</h4>
+                      <p>Up to $50,000 · 5.99% APR</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Student loan refinancing coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>
+                      <h4>Student Loan Refinancing</h4>
+                      <p>Lower your monthly payments</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Investments -->
+          <section id="investments-view" class="view">
+            <h2>Investments</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-chart-line"></i> Portfolio Summary</h3>
+                <div class="settings-option" onclick="showInvestmentDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-chart-pie"></i>
+                    <div>
+                      <h4>Total Value</h4>
+                      <p>$847,231.45</p>
+                    </div>
+                  </div>
+                  <span style="color: #28a745">+12.3%</span>
+                </div>
+                <div class="settings-option" onclick="showInvestmentDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-coins"></i>
+                    <div>
+                      <h4>Stocks & ETFs</h4>
+                      <p>$523,445.80</p>
+                    </div>
+                  </div>
+                  <span style="color: #28a745">+8.7%</span>
+                </div>
+                <div class="settings-option" onclick="showInvestmentDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-chart-bar"></i>
+                    <div>
+                      <h4>Bonds</h4>
+                      <p>$187,342.90</p>
+                    </div>
+                  </div>
+                  <span style="color: #666">+2.1%</span>
+                </div>
+                <div class="settings-option" onclick="showInvestmentDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-landmark"></i>
+                    <div>
+                      <h4>Real Estate</h4>
+                      <p>$136,442.75</p>
+                    </div>
+                  </div>
+                  <span style="color: #28a745">+15.4%</span>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-cog"></i> Investment Tools</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Retirement planner coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <div>
+                      <h4>Retirement Planner</h4>
+                      <p>Plan for your future</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Market research coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-newspaper"></i>
+                    <div>
+                      <h4>Market Research</h4>
+                      <p>Expert analysis & insights</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Financial advisor coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-user-tie"></i>
+                    <div>
+                      <h4>Financial Advisor</h4>
+                      <p>Schedule a consultation</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Mortgage -->
+          <section id="mortgage-view" class="view">
+            <h2>Mortgage</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-building"></i> Your Mortgage</h3>
+                <div class="settings-option" onclick="showMortgageDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-home"></i>
+                    <div>
+                      <h4>Primary Residence</h4>
+                      <p>$245,800 remaining</p>
+                    </div>
+                  </div>
+                  <span>3.25% APR</span>
+                </div>
+                <div class="settings-option" onclick="showMortgageDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                      <h4>Monthly Payment</h4>
+                      <p>$1,875.00 due 03/01/2026</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-option" onclick="showMortgageDetails()">
+                  <div class="settings-option-left">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                      <h4>Payoff Progress</h4>
+                      <p>65% paid · 15 years remaining</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-cog"></i> Mortgage Options</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Refinance calculator coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                      <h4>Refinance Calculator</h4>
+                      <p>See if refinancing makes sense</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Make extra payment coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-plus-circle"></i>
+                    <div>
+                      <h4>Make Extra Payment</h4>
+                      <p>Pay down principal faster</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Home equity options coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-piggy-bank"></i>
+                    <div>
+                      <h4>Home Equity Options</h4>
+                      <p>Explore HELOC and cash-out</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Settings -->
+          <section id="settings-view" class="view">
+            <h2>Settings</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-user"></i> Profile Settings</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Edit profile feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-user-circle"></i>
+                    <div>
+                      <h4>Personal Information</h4>
+                      <p>Update your name, email, phone</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Change password feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                      <h4>Password & Security</h4>
+                      <p>Change password, enable 2FA</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-bell"></i>
+                    <div>
+                      <h4>Notifications</h4>
+                      <p>Manage alert preferences</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch active"
+                    onclick="toggleNotification(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                      <h4>Two-Factor Authentication</h4>
+                      <p>Add extra security to your account</p>
+                    </div>
+                  </div>
+                  <div class="toggle-switch" onclick="toggle2FA(this)">
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-fingerprint"></i>
+                    <div>
+                      <h4>Biometric Login</h4>
+                      <p>Use fingerprint or face ID</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch active"
+                    onclick="toggleBiometric(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Device management coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-laptop"></i>
+                    <div>
+                      <h4>Trusted Devices</h4>
+                      <p>Manage devices with access</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h3><i class="fas fa-credit-card"></i> Card Settings</h3>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-credit-card"></i>
+                    <div>
+                      <h4>Contactless Payments</h4>
+                      <p>Enable/disable tap to pay</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch active"
+                    onclick="toggleContactless(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                      <h4>International Transactions</h4>
+                      <p>Allow card use abroad</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch"
+                    onclick="toggleInternational(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Card limits feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-sliders-h"></i>
+                    <div>
+                      <h4>Transaction Limits</h4>
+                      <p>Set daily spending limits</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h3><i class="fas fa-bell"></i> Preferences</h3>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                      <h4>Email Statements</h4>
+                      <p>Receive statements via email</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch active"
+                    onclick="toggleEmailStatements(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div class="settings-option">
+                  <div class="settings-option-left">
+                    <i class="fas fa-sms"></i>
+                    <div>
+                      <h4>SMS Alerts</h4>
+                      <p>Get text alerts for transactions</p>
+                    </div>
+                  </div>
+                  <div
+                    class="toggle-switch active"
+                    onclick="toggleSMSAlerts(this)"
+                  >
+                    <div class="toggle-slider"></div>
+                  </div>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Language preferences coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-language"></i>
+                    <div>
+                      <h4>Language</h4>
+                      <p>English (United States)</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Profile -->
+          <section id="profile-view" class="view">
+            <h2>Profile</h2>
+            <div class="settings-panel">
+              <div style="text-align: center; margin-bottom: 2rem">
+                <div
+                  class="profile-pic"
+                  style="
+                    width: 100px;
+                    height: 100px;
+                    margin: 0 auto 1rem;
+                    cursor: default;
+                  "
+                >
+                  <span class="profile-initial">JD</span>
+                  <img
+                    id="profile-image-large"
+                    src=""
+                    alt="Profile"
+                    style="display: none"
+                  />
+                </div>
+                <h3>Joshua M Demars</h3>
+                <p style="color: #666">Member since 2020</p>
+              </div>
+              <div class="settings-section">
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Edit profile feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-user"></i>
+                    <div>
+                      <h4>Full Name</h4>
+                      <p>Joshua M Demars</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Edit email feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                      <h4>Email Address</h4>
+                      <p>joshdemars1946@gmail.com</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Edit phone feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                      <h4>Phone Number</h4>
+                      <p>+1 (205) 256 2867</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Edit address feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                      <h4>Address</h4>
+                      <p>
+                        Josh Demars 930 N Maple Grove Rd Boise Idaho 83704 United State
+                      </p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Statements -->
+          <section id="statements-view" class="view">
+            <h2>Statements</h2>
+            <div class="settings-panel">
+              <div class="settings-section">
+                <h3><i class="fas fa-file-pdf"></i> Recent Statements</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Downloading January 2026 statement... If you need assistance, contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>
+                      <h4>January 2026</h4>
+                      <p>Statement period: Jan 1-31, 2026</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-download"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Downloading December 2025 statement... If you need assistance, contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>
+                      <h4>December 2025</h4>
+                      <p>Statement period: Dec 1-31, 2025</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-download"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'Downloading November 2025 statement... If you need assistance, contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>
+                      <h4>November 2025</h4>
+                      <p>Statement period: Nov 1-30, 2025</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-download"></i>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3><i class="fas fa-clock"></i> Archive</h3>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'View archive feature coming soon! Please contact Mabel at support@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                      <h4>2025 Statements</h4>
+                      <p>View all statements from 2025</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div
+                  class="settings-option"
+                  onclick="
+                    alert(
+                      'View archive feature coming soon! Please contact Mabel atsupport@securebank.com',
+                    )
+                  "
+                >
+                  <div class="settings-option-left">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                      <h4>2024 Statements</h4>
+                      <p>View all statements from 2024</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <span
+            ><i class="fas fa-university"></i> SecureBank, Member
+            FDIC</span
+          >
+          <span><i class="fas fa-home"></i> Equal Housing Lender</span>
+          <span
+            ><i class="far fa-copyright"></i> 2026 SecureBank. All rights
+            reserved. Licensed and regulated financial institution.</span
+          >
+        </div>
+      </footer>
+    </div>
+
+   
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Reset Password</h3>
+        <p>
+          Please contact customer care at <strong>1-800-SECUREBK</strong> or
+          email
+          <strong
+            ><a
+              href="mailto:support@securebank.com"
+              class="email-link"
+              >support@securebank.com</a
+            ></strong
+          >
+        </p>
+        <button class="btn modal-close">Close</button>
+      </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Open an Account</h3>
+        <p>
+          Visit a branch or call <strong>1-800-SECUREBK</strong> or email
+          Mabel at
+          <strong
+            ><a
+              href="mailto:support@securebank.com"
+              class="email-link"
+              >support@securebank.com</a
+            ></strong
+          >
+        </p>
+        <button class="btn modal-close">Close</button>
+      </div>
+    </div>
+
+    <!-- Service Details Modal -->
+    <div id="service-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="service-modal-content"></div>
+        <button class="btn modal-close">Close</button>
+      </div>
+    </div>
+
+    
+
+   
+
+   
+        <!-- Check Deposit Modal with Camera -->
+<div id="deposit-modal" class="modal">
+  <div class="modal-content" style="max-width: 550px; position: relative;">
+    <!-- X Close Button -->
+    <span class="close-modal" style="position: absolute; top: 1rem; right: 1.5rem; font-size: 1.8rem; cursor: pointer; z-index: 10;">&times;</span>
+    
+    <div style="text-align: center; margin-bottom: 1rem; margin-top: 0.5rem;">
+      <i class="fas fa-money-bill-wave" style="font-size: 3rem; color: #d4a017;"></i>
+      <h3>Deposit a Check</h3>
+      <p>Take photos of front and back of your check</p>
+    </div>
+
+    <!-- Progress Steps - UPDATED -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; padding: 0 1rem;">
+      <div id="step-front" style="text-align: center; flex: 1;">
+        <div id="step-front-circle" style="width: 35px; height: 35px; background: #d4a017; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.3rem; font-weight: bold;">1</div>
+        <div id="step-front-text" style="font-size: 0.75rem; font-weight: 500;">Front</div>
+        <div id="step-front-status" style="font-size: 0.65rem; color: #999; margin-top: 2px;">Pending</div>
+      </div>
+      <div id="step-back" style="text-align: center; flex: 1; opacity: 0.5;">
+        <div id="step-back-circle" style="width: 35px; height: 35px; background: #ccc; color: #666; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.3rem; font-weight: bold;">2</div>
+        <div style="font-size: 0.75rem;">Back</div>
+        <div id="step-back-status" style="font-size: 0.65rem; color: #999; margin-top: 2px;">Pending</div>
+      </div>
+      <div id="step-review" style="text-align: center; flex: 1; opacity: 0.5;">
+        <div id="step-review-circle" style="width: 35px; height: 35px; background: #ccc; color: #666; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.3rem; font-weight: bold;">3</div>
+        <div style="font-size: 0.75rem;">Review & Submit</div>
+        <div id="step-review-status" style="font-size: 0.65rem; color: #999; margin-top: 2px;">Waiting</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Front of Check -->
+    <div id="front-section" class="deposit-step">
+      <div style="border: 2px dashed #ccc; border-radius: 1rem; padding: 1.5rem; text-align: center; margin-bottom: 1rem;">
+        <i class="fas fa-camera" style="font-size: 3rem; color: #d4a017; margin-bottom: 0.5rem; display: block;"></i>
+        <p style="margin-bottom: 1rem;">Take a photo of the FRONT of your check</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" id="front-camera-btn" style="background: #d4a017; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 0.5rem; cursor: pointer;">
+            <i class="fas fa-camera"></i> Take Photo
+          </button>
+          <button type="button" id="front-upload-btn" style="background: #666; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 0.5rem; cursor: pointer;">
+            <i class="fas fa-upload"></i> Upload
+          </button>
+        </div>
+        <input type="file" id="front-image-input" accept="image/*" style="display: none;" />
+        <div id="front-preview" style="margin-top: 1rem; display: none;">
+          <img id="front-preview-img" style="max-width: 100%; max-height: 150px; border-radius: 0.5rem; border: 2px solid #28a745;" />
+          <div id="front-verifying" style="display: none; margin-top: 0.5rem;">
+            <i class="fas fa-spinner fa-pulse"></i> Verifying check image...
+          </div>
+          <p id="front-verified-text" style="color: #28a745; margin-top: 0.3rem; display: none;"><i class="fas fa-check-circle"></i> Front verified ✓</p>
+        </div>
+      </div>
+      <button id="next-to-back" class="btn-primary" style="width: 100%;" disabled>Next: Back of Check →</button>
+    </div>
+
+    <!-- Step 2: Back of Check -->
+    <div id="back-section" class="deposit-step" style="display: none;">
+      <div style="border: 2px dashed #ccc; border-radius: 1rem; padding: 1.5rem; text-align: center; margin-bottom: 1rem;">
+        <i class="fas fa-camera" style="font-size: 3rem; color: #d4a017; margin-bottom: 0.5rem; display: block;"></i>
+        <p style="margin-bottom: 1rem;">Take a photo of the BACK of your check (endorsed)</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" id="back-camera-btn" style="background: #d4a017; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 0.5rem; cursor: pointer;">
+            <i class="fas fa-camera"></i> Take Photo
+          </button>
+          <button type="button" id="back-upload-btn" style="background: #666; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 0.5rem; cursor: pointer;">
+            <i class="fas fa-upload"></i> Upload
+          </button>
+        </div>
+        <input type="file" id="back-image-input" accept="image/*" style="display: none;" />
+        <div id="back-preview" style="margin-top: 1rem; display: none;">
+          <img id="back-preview-img" style="max-width: 100%; max-height: 150px; border-radius: 0.5rem; border: 2px solid #28a745;" />
+          <div id="back-verifying" style="display: none; margin-top: 0.5rem;">
+            <i class="fas fa-spinner fa-pulse"></i> Verifying back image...
+          </div>
+          <p id="back-verified-text" style="color: #28a745; margin-top: 0.3rem; display: none;"><i class="fas fa-check-circle"></i> Back verified ✓</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <button id="back-to-front" class="btn" style="background: #ccc; color: #333; flex: 1; border: none; padding: 0.7rem; border-radius: 0.5rem; cursor: pointer;">← Back</button>
+        <button id="next-to-review" class="btn-primary" style="flex: 1;" disabled>Review & Submit →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Review & Submit -->
+    <div id="review-section" class="deposit-step" style="display: none;">
+      <div style="background: #f9f9f9; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div style="flex: 1; text-align: center;">
+            <p style="font-weight: 600; margin-bottom: 0.3rem;">Front of Check</p>
+            <img id="review-front-img" style="max-width: 100%; max-height: 100px; border-radius: 0.5rem;" />
+          </div>
+          <div style="flex: 1; text-align: center;">
+            <p style="font-weight: 600; margin-bottom: 0.3rem;">Back of Check</p>
+            <img id="review-back-img" style="max-width: 100%; max-height: 100px; border-radius: 0.5rem;" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Check Amount ($)</label>
+        <div class="amount-input">
+          <span>$</span>
+          <input type="number" id="deposit-amount" step="0.01" min="0.01" placeholder="0.00" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Check Number (optional)</label>
+        <input type="text" id="check-number" placeholder="Enter check number" />
+      </div>
+      
+      <div class="form-group">
+        <label>Select Account</label>
+        <select id="deposit-account">
+          <option value="checking">Checking (••••4582)</option>
+          <option value="savings">Savings (••••3391)</option>
+        </select>
+      </div>
+      
+      <div class="security-badge" style="margin: 1rem 0;">
+        <i class="fas fa-shield-alt"></i>
+        <div class="security-badge-text">
+          <h4>🔒 Secure Check Deposit</h4>
+          <p>Your check images are encrypted and securely stored</p>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 1rem;">
+        <button id="review-back-btn" class="btn" style="background: #ccc; color: #333; flex: 1; border: none; padding: 0.7rem; border-radius: 0.5rem; cursor: pointer;">← Back</button>
+        <button id="confirm-deposit-btn" class="btn-primary" style="flex: 1;">Submit Deposit</button>
+      </div>
+      <div id="deposit-message" class="message" style="margin-top: 1rem;"></div>
+    </div>
+  </div>
+</div>
+      
+      
+      
+<!-- Transfer Options Modal -->
+<div id="transfer-options-modal" class="modal">
+  <div class="modal-content" style="text-align: center;">
+    <span class="close-modal">&times;</span>
+    <div style="font-size: 3rem; color: #d4a017; margin-bottom: 1rem;"><i class="fas fa-exchange-alt"></i></div>
+    <h3>Choose Transfer Type</h3>
+    <p>Select where you want to send money</p>
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0;">
+      <button id="internal-transfer-option" style="background: linear-gradient(135deg, #d4a017, #966f33); color: white; border: none; padding: 1rem; border-radius: 0.75rem; cursor: pointer;">
+        <i class="fas fa-university"></i> Internal Transfer <small>(Between your accounts)</small>
+      </button>
+      <button id="external-transfer-option" style="background: linear-gradient(135deg, #28a745, #1e7e34); color: white; border: none; padding: 1rem; border-radius: 0.75rem; cursor: pointer;">
+        <i class="fas fa-globe"></i> External Transfer <small>(To other banks)</small>
+      </button>
+    </div>
+    <button class="btn-primary modal-close" style="background: #ccc; color: #333;">Cancel</button>
+  </div>
+</div>
+
+<!-- Internal Transfer Modal -->
+<div id="internal-transfer-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Internal Transfer</h3>
+    <div class="form-group">
+      <label>From Account</label>
+      <select id="internal-from-account">
+        <option value="checking">Checking (••••4582) – $<span id="internal-checking-balance">32,560.12</span></option>
+        <option value="savings">Savings (••••3391) – $<span id="internal-savings-balance"></span>3,745.00</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>To Account</label>
+      <select id="internal-to-account">
+        <option value="savings">Savings (••••3391)</option>
+        <option value="checking">Checking (••••4582)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Amount ($)</label>
+      <div class="amount-input"><span>$</span><input type="number" id="internal-amount" step="0.01" placeholder="0.00" /></div>
+    </div>
+    <button id="confirm-internal-transfer" class="btn-primary">Transfer</button>
+    <div id="internal-transfer-message" class="message"></div>
+  </div>
+</div>
+
+
+<!-- External Transfer Modal -->
+<div id="external-transfer-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>External Transfer</h3>
+    <div class="form-group">
+      <label>From Account</label>
+      <select id="external-from-account">
+        <option value="checking">Checking (••••4582) – $<span id="external-checking-balance">32,560.12</span></option>
+        <option value="savings">Savings (••••3391) – $<span id="external-savings-balance">3,745.00</span></option>
+      </select>
+    </div>
+    <div class="form-group"><label>Recipient Account Number</label><input type="text" id="external-to-account" placeholder="Enter account number" /></div>
+    <div class="form-group"><label>Recipient Bank Name</label><input type="text" id="external-bank-name" placeholder="Enter bank name" /></div>
+    <div class="form-group"><label>Recipient Name</label><input type="text" id="external-account-name" placeholder="Enter recipient name" /></div>
+    <div class="form-group"><label>Amount ($)</label><div class="amount-input"><span>$</span><input type="number" id="external-amount" step="0.01" placeholder="0.00" /></div></div>
+    <button id="confirm-external-transfer" class="btn-primary">Send Money</button>
+    <div id="external-transfer-message" class="message"></div>
+  </div>
+</div>
+
+
+<!-- Security Question Modal -->
+<div id="security-modal" class="modal">
+  <div class="modal-content" style="max-width: 450px;">
+    <span class="close-modal">&times;</span>
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <i class="fas fa-shield-alt" style="font-size: 3rem; color: #d4a017;"></i>
+      <h3>Security Verification</h3>
+      <p>Please answer your security question to continue</p>
+    </div>
+    
+    <div class="form-group">
+      <label>Security Question</label>
+      <input type="text" id="security-question" value="What was your first car?" readonly style="background: #f5f5f5; cursor: default; font-weight: 500;" />
+    </div>
+    
+    <div class="form-group">
+      <label>Your Answer</label>
+      <input type="text" id="security-answer" placeholder="Enter your answer" autocomplete="off" />
+    </div>
+    
+    <div class="security-badge" style="margin: 1rem 0;">
+      <i class="fas fa-car"></i>
+      <div class="security-badge-text">
+        <h4>🔒 Extra Security Layer</h4>
+        <p>This helps protect your account from unauthorized access</p>
+      </div>
+    </div>
+    
+    <button id="verify-security-btn" class="btn-primary">Verify & Continue →</button>
+    <div id="security-message" class="message" style="margin-top: 1rem;"></div>
+  </div>
+</div>
+
+    <script>
+      // ==================== STATE ====================
+      
+      let currentUser = null;
+      // localStorage.removeItem('bankBalances');
+      
+      const OWNER_NAME = "Joshua M Demars";
+      const BANK_EMAIL = "support@securebank.com";
+      const BANK_PHONE = "1-800-SECUREBK";
+
+      // ADDED: Load balances from localStorage or use defaults
+     // Load balances from localStorage or use defaults
+     let balances = JSON.parse(localStorage.getItem("bankBalances")) || {
+      
+  checking: 32560.12,    // ← $285,000.00
+  savings: 3745.00,      // ← $40,847.82 (total: $325,847.82)
+};
+
+      // Store known recipients
+      let knownRecipients = JSON.parse(
+        localStorage.getItem("knownRecipients"),
+      ) || {
+        123456789: "John Keith",
+        987654321: "Jane Smith",
+        555555555: " MABEL JNR",
+        9153599558: "KELVIN JNR EGBERUARE",
+        4582173556789012: "Joshua M Demars",
+      };
+
+      // store known banks (account number -> bank name)
+      let knownBanks = JSON.parse(localStorage.getItem("knownBanks")) || {
+        123456789: "Chase Bank",
+        987654321: "Valutix Bank",
+        555555555: "Bank Of America",
+        9153599558: "Wells Fargo",
+        4582173556789012: "SecureBank"
+      };
+
+      // Dark mode state
+      let darkMode = localStorage.getItem("darkMode") === "true";
+
+      // Rich transaction data
+      let transactions = JSON.parse(
+        localStorage.getItem("bankTransactions"),
+      ) || [
+        {
+          id: 1,
+          type: "incoming",
+          amount: 5847.93,
+          description: "Salary Deposit",
+          date: new Date().toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 2,
+          type: "outgoing",
+          amount: 2500.0,
+          description: "Transfer to Savings",
+          date: new Date().toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 3,
+          type: "outgoing",
+          amount: 3500.0,
+          description: "Investment Payment",
+          date: new Date(Date.now() - 86400000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 4,
+          type: "incoming",
+          amount: 15000.0,
+          description: "Dividend Payment",
+          date: new Date(Date.now() - 86400000).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 5,
+          type: "incoming",
+          amount: 25300.0,
+          description: "Mobixoil$gas Payment",
+          date: new Date(Date.now() - 86400000).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 6,
+          type: "outgoing",
+          amount: 1250.75,
+          description: "Property Management",
+          date: new Date(Date.now() - 172800000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 7,
+          type: "outgoing",
+          amount: 275,
+          description: " Social Security",
+          date: new Date(Date.now() - 172800000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 7,
+          type: "incoming",
+          amount: 3200.0,
+          description: "Consulting Fee",
+          date: new Date(Date.now() - 259200000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 9,
+          type: "outgoing",
+          amount: 875.5,
+          description: "Utility Bills",
+          date: new Date(Date.now() - 345600000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 10,
+          type: "incoming",
+          amount: 5000.0,
+          description: "Freelance Payment",
+          date: new Date(Date.now() - 432000000).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 11,
+          type: "incoming",
+          amount: 2340.5,
+          description: "Client Payment - Smith LLC",
+          date: new Date(Date.now() - 86400000 * 2).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 12,
+          type: "incoming",
+          amount: 1500.0,
+          description: "Refund - Amazon",
+          date: new Date(Date.now() - 86400000 * 3).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 13,
+          type: "incoming",
+          amount: 3200.75,
+          description: "Bonus Payment",
+          date: new Date(Date.now() - 86400000 * 4).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 14,
+          type: "incoming",
+          amount: 875.25,
+          description: "Interest Payment",
+          date: new Date(Date.now() - 86400000 * 5).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 15,
+          type: "incoming",
+          amount: 4200.0,
+          description: "Stock Dividend",
+          date: new Date(Date.now() - 86400000 * 6).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 16,
+          type: "outgoing",
+          amount: 125.5,
+          description: "Netflix Subscription",
+          date: new Date(Date.now() - 86400000 * 1).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 17,
+          type: "outgoing",
+          amount: 89.99,
+          description: "Spotify Premium",
+          date: new Date(Date.now() - 86400000 * 2).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 18,
+          type: "outgoing",
+          amount: 2340.0,
+          description: "Rent Payment",
+          date: new Date(Date.now() - 86400000 * 3).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 19,
+          type: "outgoing",
+          amount: 45.3,
+          description: "Starbucks",
+          date: new Date(Date.now() - 86400000 * 4).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 20,
+          type: "outgoing",
+          amount: 210.0,
+          description: "Electric Bill",
+          date: new Date(Date.now() - 86400000 * 5).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 21,
+          type: "outgoing",
+          amount: 85.75,
+          description: "Internet Bill",
+          date: new Date(Date.now() - 86400000 * 6).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 22,
+          type: "outgoing",
+          amount: 350.0,
+          description: "Gym Membership",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 23,
+          type: "outgoing",
+          amount: 650.0,
+          description: "Federal Tax",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 24,
+          type: "incoming",
+          amount: 12650.0,
+          description: "techgianttrflimited",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+         {
+          id: 25,
+          type: "outgoing",
+          amount: 15.0,
+          description: "Service Fee",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "checking",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 26,
+          type: "outgoing",
+          amount: 500.0,
+          description: "Baxity Store",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 27,
+          type: "outgoing",
+          amount: 850.0,
+          description: "CVS Pharmacy",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+        {
+          id: 27,
+          type: "outgoing",
+          amount: 1000.0,
+          description: "CVS Pharmacy",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+
+        {
+          id: 28,
+          type: "incoming",
+          amount: 1000.0,
+          description: "ConocoPhillips",
+          date: new Date(Date.now() - 86400000 * 7).toISOString().split("T")[0],
+          account: "savings",
+          accountName: OWNER_NAME,
+          status: "completed",
+        },
+
+      ];
+
+      // Chat response counter
+      let chatResponseCount = 0;
+
+      // ==================== DOM ELEMENTS ====================
+      const loginScreen = document.getElementById("login-screen");
+      const dashboard = document.getElementById("dashboard");
+      const loginForm = document.getElementById("login-form");
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+      const navLinks = document.querySelectorAll(".nav-menu a");
+      const views = document.querySelectorAll(".view");
+      const forgotLink = document.getElementById("forgot-password");
+      const signupLink = document.getElementById("signup-link");
+      const forgotModal = document.getElementById("forgot-modal");
+      const signupModal = document.getElementById("signup-modal");
+      const careModal = document.getElementById("care-modal");
+      const serviceModal = document.getElementById("service-modal");
+      const customerCareBtn = document.getElementById("customer-care");
+      const customerCareQuick = document.getElementById("customer-care-quick");
+      const closeModalButtons = document.querySelectorAll(
+        ".close-modal, .modal-close",
+      );
+      const greetingUserSpan = document.getElementById("greeting-user");
+      const welcomeHeading = document.getElementById("welcome-heading");
+      const accountHolderSpan = document.getElementById("account-holder-name");
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const liveClock = document.getElementById("live-clock");
+      const darkModeToggle = document.getElementById("dark-mode-toggle");
+      const profileUpload = document.getElementById("profile-upload");
+      const profileUploadBtn = document.getElementById("profile-upload-btn");
+      const profileImage = document.getElementById("profile-image");
+      const profileImageLarge = document.getElementById("profile-image-large");
+      const profilePic = document.getElementById("profile-pic");
+      const profileInitial = document.querySelector(".profile-initial");
+
+      // ==================== INITIALIZATION ====================
+      function init() {
+        loginScreen.classList.add("active");
+        dashboard.classList.remove("active");
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        updateGreeting();
+        setInterval(updateGreeting, 60000);
+
+        checkSavedSession();
+        initDarkMode();
+        setupEventListeners();
+        setupModals();
+        setupMobileMenu();
+        setupAccountNameAutoFill();
+        setupProfilePicture();
+        loadSavedProfilePicture();
+      }
+
+      // Live clock
+      function updateClock() {
+        if (liveClock) {
+          const now = new Date();
+          liveClock.textContent = now.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          });
+        }
+      }
+
+      // Greeting
+      function updateGreeting() {
+        const hour = new Date().getHours();
+        let greeting = "";
+        if (hour >= 5 && hour < 12) greeting = "Good Morning";
+        else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+        else if (hour >= 17 && hour < 21) greeting = "Good Evening";
+        else greeting = "Good Night";
+        if (greetingUserSpan) greetingUserSpan.textContent = greeting;
+      }
+
+      
+
+      // Dark Mode
+      function initDarkMode() {
+        if (darkMode) {
+          document.body.classList.add("dark-mode");
+          if (darkModeToggle)
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+          document.body.classList.remove("dark-mode");
+          if (darkModeToggle)
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+      }
+
+      function toggleDarkMode() {
+        darkMode = !darkMode;
+        localStorage.setItem("darkMode", darkMode);
+        if (darkMode) {
+          document.body.classList.add("dark-mode");
+          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+          document.body.classList.remove("dark-mode");
+          darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+      }
+      if (darkModeToggle)
+        darkModeToggle.addEventListener("click", toggleDarkMode);
+
+      // Check saved session
+      function checkSavedSession() {
+        const saved = localStorage.getItem("bankUser");
+        if (saved) {
+          currentUser = JSON.parse(saved);
+        }
+      }
+
+      // Profile picture
+      function setupProfilePicture() {
+        if (profileUploadBtn && profileUpload) {
+          profileUploadBtn.addEventListener("click", () =>
+            profileUpload.click(),
+          );
+          profileUpload.addEventListener("change", function (e) {
+            if (this.files && this.files[0]) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                profileImage.src = e.target.result;
+                if (profileImageLarge) profileImageLarge.src = e.target.result;
+                profileImage.style.display = "block";
+                if (profileImageLarge)
+                  profileImageLarge.style.display = "block";
+                profileInitial.style.display = "none";
+                profilePic.classList.add("has-image");
+                localStorage.setItem("profilePicture", e.target.result);
+              };
+              reader.readAsDataURL(this.files[0]);
+            }
+          });
+        }
+      }
+
+      function loadSavedProfilePicture() {
+        const saved = localStorage.getItem("profilePicture");
+        if (saved) {
+          profileImage.src = saved;
+          if (profileImageLarge) profileImageLarge.src = saved;
+          profileImage.style.display = "block";
+          if (profileImageLarge) profileImageLarge.style.display = "block";
+          profileInitial.style.display = "none";
+          profilePic.classList.add("has-image");
+        }
+      }
+
+      // ==================== LOGIN WITH 3-SECOND DELAY ====================
+      
+     function login(username, password) {
+  if (username === "Joshdemars2024" && password === "@demars#123") {
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Signing in...';
+    loginBtn.disabled = true;
+
+    setTimeout(() => {
+      currentUser = { username, name: OWNER_NAME };
+      if (document.getElementById("remember-me").checked) {
+        localStorage.setItem("bankUser", JSON.stringify(currentUser));
+      }
+      
+      // ✅ SHOW SECURITY MODAL INSTEAD OF DASHBOARD
+      const securityModal = document.getElementById("security-modal");
+      if (securityModal) {
+        securityModal.classList.add("show");
+      }
+      
+      // Clear previous answer
+      const securityAnswer = document.getElementById("security-answer");
+      if (securityAnswer) securityAnswer.value = "";
+      
+      const securityMessage = document.getElementById("security-message");
+      if (securityMessage) securityMessage.innerHTML = "";
+      
+      loginBtn.innerHTML = '<span>Sign In</span> <i class="fas fa-arrow-right"></i>';
+      loginBtn.disabled = false;
+    }, 3000);
+  } else {
+    showLoginMessage("Incorrect username or password", "error");
+    const formContainer = document.querySelector(".login-form-container");
+    formContainer.style.animation = "shake 0.5s";
+    setTimeout(() => (formContainer.style.animation = ""), 500);
+  }
+}
+      // ==================== NAVIGATION ====================
+      function navigateTo(viewId) {
+        navLinks.forEach((link) => {
+          const parent = link.parentElement;
+          if (link.dataset.view === viewId) {
+            parent.classList.add("active");
+          } else {
+            parent.classList.remove("active");
+          }
+        });
+        views.forEach((view) => view.classList.remove("active"));
+        const target = document.getElementById(viewId + "-view");
+        if (target) target.classList.add("active");
+        if (window.innerWidth <= 768) sidebar.classList.remove("active");
+      }
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          navigateTo(link.dataset.view);
+        });
+      });
+
+      document.querySelectorAll(".action-card[data-view]").forEach((btn) => {
+        btn.addEventListener("click", () => navigateTo(btn.dataset.view));
+      });
+
+      document.getElementById("pay-bills")?.addEventListener("click", () => {
+        alert(
+          "Bill payment service coming soon. Please contact Mabel at " +
+            BANK_EMAIL +
+            " for assistance.",
+        );
+      });
+
+      // ==================== BALANCES (persist to localStorage) ====================
+      function updateBalances() {
+        const checkingEl = document.getElementById("checking-balance");
+        const checkingCard = document.getElementById("checking-balance-card");
+        const savingsEl = document.getElementById("savings-balance");
+        if (checkingEl)
+          checkingEl.textContent = formatCurrency(balances.checking);
+        if (checkingCard)
+          checkingCard.textContent = formatCurrency(balances.checking);
+        if (savingsEl) savingsEl.textContent = formatCurrency(balances.savings);
+        updateBalanceDisplays();
+        // ADDED: Save balances to localStorage
+        localStorage.setItem("bankBalances", JSON.stringify(balances));
+      }
+
+      function updateBalanceDisplays() {
+        const cd = document.getElementById("checking-balance-display");
+        const sd = document.getElementById("savings-balance-display");
+        if (cd)
+          cd.textContent = formatCurrency(balances.checking).replace("$", "");
+        if (sd)
+          sd.textContent = formatCurrency(balances.savings).replace("$", "");
+      }
+
+      function formatCurrency(amount) {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 2,
+        }).format(amount);
+      }
+
+      // ==================== TRANSACTIONS ====================
+      function saveTransactions() {
+        localStorage.setItem("bankTransactions", JSON.stringify(transactions));
+      }
+
+      function loadTransactions() {
+        const saved = localStorage.getItem("bankTransactions");
+        if (saved) transactions = JSON.parse(saved);
+      }
+
+      function renderTransactions(filter = "all") {
+        const recentContainer = document.getElementById("recent-transactions");
+        const allContainer = document.getElementById("all-transactions");
+
+        let filtered = transactions;
+        if (filter !== "all") {
+          if (filter === "pending") {
+            filtered = transactions.filter((t) => t.status === "pending");
+          } else {
+            filtered = transactions.filter((t) => t.type === filter);
+          }
+        }
+
+        const sorted = [...filtered].sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        const recent = sorted.slice(0, 5);
+
+        if (recentContainer)
+          recentContainer.innerHTML = renderTransactionList(recent);
+        if (allContainer)
+          allContainer.innerHTML = renderTransactionList(sorted);
+      }
+
+      function renderTransactionList(list) {
+        if (!list.length)
+          return '<p class="no-transactions">No transactions</p>';
+        return list
+          .map(
+            (t) => `
+                <div class="transaction-item ${t.status === "pending" ? "pending-transaction" : ""}" onclick="showTransactionDetails(${t.id})">
+                    <div class="transaction-info">
+                        <div class="transaction-icon ${t.type} ${t.status}">
+                            <i class="fas ${t.type === "incoming" ? "fa-arrow-down" : "fa-arrow-up"}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>${t.description} ${t.status === "pending" ? '<span class="pending-badge">Pending</span>' : ""}</h4>
+                            <p>${formatDate(t.date)} · ${t.account} account</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount ${t.type}">
+                        ${t.type === "incoming" ? "+" : "-"}${formatCurrency(t.amount)}
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        today.setHours(0, 0, 0, 0);
+        yesterday.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+        if (date.getTime() === today.getTime()) return "Today";
+        if (date.getTime() === yesterday.getTime()) return "Yesterday";
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      // Filters
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          this.classList.add("active");
+          renderTransactions(this.dataset.filter);
+        });
+      });
+
+      // ==================== AUTO-FILL ACCOUNT NAME ====================
+     function setupAccountNameAutoFill() {
+  const accNum = document.getElementById("to-account");
+  const accName = document.getElementById("account-name");
+  const bankNameField = document.getElementById("bank-name");
+
+  if (accNum && accName && bankNameField) {
+    accNum.addEventListener("input", function () {
+      const num = this.value.trim();
+
+      // Auto-fill recipient name
+      if (knownRecipients[num]) {
+        accName.value = knownRecipients[num];
+        accName.style.backgroundColor = "#e8f5e8";
+      } else {
+        accName.value = "";
+        accName.style.backgroundColor = "";
+      }
+
+      // Auto-fill bank name
+      if (knownBanks[num]) {
+        bankNameField.value = knownBanks[num];
+        bankNameField.style.backgroundColor = "#e8f5e8";
+      } else {
+        bankNameField.value = "";
+        bankNameField.style.backgroundColor = "";
+      }
+    });
+  }
+}
+
+      // ==================== TRANSFER FORM ====================
+    // ==================== SHOW TRANSFER MESSAGE FUNCTION ====================
+function showTransferMessage(msg, type) {
+  const msgDiv = document.getElementById("transfer-message");
+  if (msgDiv) {
+    msgDiv.textContent = msg;
+    msgDiv.className = `message ${type}`;
+    msgDiv.style.display = "block";
+  } else {
+    console.error("Message div not found!");
+    alert(msg); // Fallback if message div doesn't exist
+  }
+}
+
+// ==================== TRANSFER FORM WITH 3-SECOND DELAY ====================
+function setupTransferForm() {
+  const form = document.getElementById("transfer-form");
+  if (!form) {
+    console.error("Transfer form not found!");
+    return;
+  }
+  
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    console.log("Transfer form submitted");
+    
+    // Get form values
+    const from = document.getElementById("from-account").value;
+    const toAcc = document.getElementById("to-account").value.trim();
+    const bankName = document.getElementById("bank-name").value.trim();
+    const routing = document.getElementById("routing-number").value.trim();
+    const accName = document.getElementById("account-name").value.trim();
+    const amount = parseFloat(document.getElementById("amount").value);
+    const desc = document.getElementById("description").value.trim() || "Transfer";
+    const sendBtn = document.getElementById("send-money-btn");
+    
+    // Validate fields
+    if (!toAcc) {
+      showTransferMessage("Please enter recipient account number", "error");
+      return;
+    }
+    if (!bankName) {
+      showTransferMessage("Please enter recipient bank name", "error");
+      return;
+    }
+    if (!routing) {
+      showTransferMessage("Please enter routing number", "error");
+      return;
+    }
+    if (!accName) {
+      showTransferMessage("Please enter recipient name", "error");
+      return;
+    }
+    if (!amount || amount <= 0) {
+      showTransferMessage("Please enter a valid amount", "error");
+      return;
+    }
+    if (amount > balances[from]) {
+      showTransferMessage("Insufficient funds", "error");
+      return;
+    }
+    
+    // DISABLE BUTTON AND SHOW LOADING
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
+    showTransferMessage("⏳ Processing your transfer (3 seconds)...", "info");
+    
+    // 3-SECOND DELAY
+    setTimeout(function() {
+      
+      // Deduct from balance
+      balances[from] = balances[from] - amount;
+      
+      // Save to known recipients for future auto-fill
+      if (typeof knownRecipients !== 'undefined') {
+        if (!knownRecipients[toAcc]) {
+          knownRecipients[toAcc] = accName;
+          localStorage.setItem("knownRecipients", JSON.stringify(knownRecipients));
+        }
+      }
+      
+      // Save bank name
+      if (typeof knownBanks !== 'undefined') {
+        if (!knownBanks[toAcc]) {
+          knownBanks[toAcc] = bankName;
+          localStorage.setItem("knownBanks", JSON.stringify(knownBanks));
+        }
+      }
+      
+      // Create transaction record
+      const newTx = {
+        id: Date.now(), // Use timestamp as ID
+        type: "outgoing",
+        amount: amount,
+        description: `Transfer to ${accName} at ${bankName} - ${desc}`,
+        date: new Date().toISOString().split("T")[0],
+        account: from,
+        accountName: accName,
+        status: "pending",
+      };
+      
+      // Make sure transactions array exists
+      if (typeof transactions === 'undefined') {
+        window.transactions = [];
+      }
+      
+      transactions.push(newTx);
+      
+      // Save transactions if function exists
+      if (typeof saveTransactions === 'function') {
+        saveTransactions();
+      } else {
+        localStorage.setItem("bankTransactions", JSON.stringify(transactions));
+      }
+      
+      // Update balances display
+      if (typeof updateBalances === 'function') {
+        updateBalances();
+      } else {
+        // Manual update if function doesn't exist
+        const checkingEl = document.getElementById("checking-balance");
+        const checkingCard = document.getElementById("checking-balance-card");
+        const savingsEl = document.getElementById("savings-balance");
+        
+        if (checkingEl) checkingEl.textContent = formatMoney(balances.checking);
+        if (checkingCard) checkingCard.textContent = formatMoney(balances.checking);
+        if (savingsEl) savingsEl.textContent = formatMoney(balances.savings);
+        
+        // Update display spans
+        const cd = document.getElementById("checking-balance-display");
+        const sd = document.getElementById("savings-balance-display");
+        if (cd) cd.textContent = formatMoney(balances.checking).replace("$", "");
+        if (sd) sd.textContent = formatMoney(balances.savings).replace("$", "");
+        
+        localStorage.setItem("bankBalances", JSON.stringify(balances));
+      }
+      
+      // Render transactions if function exists
+      if (typeof renderTransactions === 'function') {
+        renderTransactions();
+      }
+      
+      // Show success message
+      showTransferMessage(`✅ Sent $${amount.toFixed(2)} to ${accName}. Transaction pending.`, "success");
+      
+      // Reset form
+      form.reset();
+      
+      // RE-ENABLE BUTTON
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Money';
+      
+      // Clear message after 5 seconds
+      setTimeout(() => {
+        const msgDiv = document.getElementById("transfer-message");
+        if (msgDiv) {
+          msgDiv.innerHTML = "";
+          msgDiv.className = "message";
+        }
+      }, 5000);
+      
+    }, 5000); // 3000 milliseconds = 3 SECONDS DELAY
+  });
+}
+
+// Helper function to format money (if not already defined)
+function formatMoney(amount) {
+  return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
+      // ==================== MODALS ====================
+      function setupModals() {
+        if (forgotLink)
+          forgotLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            forgotModal.classList.add("show");
+          });
+        if (signupLink)
+          signupLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            signupModal.classList.add("show");
+          });
+        if (customerCareBtn)
+          customerCareBtn.addEventListener("click", () =>
+            careModal.classList.add("show"),
+          );
+        if (customerCareQuick)
+          customerCareQuick.addEventListener("click", () =>
+            careModal.classList.add("show"),
+          );
+        closeModalButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            forgotModal.classList.remove("show");
+            signupModal.classList.remove("show");
+            careModal.classList.remove("show");
+            serviceModal.classList.remove("show");
+          });
+        });
+        window.addEventListener("click", (e) => {
+          if (e.target === forgotModal) forgotModal.classList.remove("show");
+          if (e.target === signupModal) signupModal.classList.remove("show");
+          if (e.target === careModal) careModal.classList.remove("show");
+          if (e.target === serviceModal) serviceModal.classList.remove("show");
+        });
+      }
+
+      // ==================== CUSTOMER CARE FUNCTIONS ====================
+      window.initiateCall = function () {
+        const icon = event?.currentTarget?.querySelector("i");
+        if (icon) {
+          icon.classList.add("ring-animation");
+          setTimeout(() => icon.classList.remove("ring-animation"), 500);
+        }
+        alert(`Calling ${BANK_PHONE}... Mabel will assist you shortly.`);
+      };
+
+      window.initiateEmail = function () {
+        alert(`Opening email to Mabel at ${BANK_EMAIL}`);
+      };
+
+      window.initiateChat = function () {
+        const chatMessages = document.getElementById("chat-messages");
+        const botMsg = document.createElement("div");
+        botMsg.className = "chat-message bot";
+        botMsg.innerHTML = `<div class="chat-message-sender">Mabel • Customer Care</div><div class="chat-message-content">An agent will be with you shortly. I'm Mabel, how can I help you today?</div><div class="chat-message-time">Just now</div>`;
+        chatMessages.appendChild(botMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      };
+
+      window.sendChatMessage = function () {
+        const input = document.getElementById("chat-input");
+        const msg = input.value.trim();
+        if (!msg) return;
+        const chatMessages = document.getElementById("chat-messages");
+        chatMessages.innerHTML += `<div class="chat-message user"><div class="chat-message-sender">You</div><div class="chat-message-content">${msg}</div><div class="chat-message-time">Just now</div></div>`;
+        input.value = "";
+        setTimeout(() => {
+          chatResponseCount = (chatResponseCount + 1) % 7;
+          let reply = "";
+          switch (chatResponseCount) {
+            case 0:
+              reply = `Thank you for your message. I'm Mabel, and I'm here to help! Could you provide more details about your inquiry?`;
+              break;
+            case 1:
+              reply = `I understand your concern. Let me check on that for you. While I look into this, you can also reach us at ${BANK_PHONE} for immediate assistance.`;
+              break;
+            case 2:
+              reply = `For security purposes, please email us at ${BANK_EMAIL} with your account details, and Mabel will respond within 4 hours.`;
+              break;
+            case 3:
+              reply = `I'd be happy to help with that! You can also visit our FAQ section below for quick answers to common questions.`;
+              break;
+            case 4:
+              reply = `Let me connect you with a specialist. In the meantime, you can call our 24/7 hotline at ${BANK_PHONE} for immediate assistance.`;
+              break;
+            case 5:
+              reply = `Thank you for banking with SecureBank. Mabel is here to ensure you get the best support. Would you like me to email you more information at ${BANK_EMAIL}?`;
+              break;
+            case 6:
+              reply = `I've noted your question. For detailed assistance, please send an email to ${BANK_EMAIL} with your account number, and Mabel will prioritize your request.`;
+              break;
+          }
+          chatMessages.innerHTML += `<div class="chat-message bot"><div class="chat-message-sender">Mabel • Customer Care</div><div class="chat-message-content">${reply}</div><div class="chat-message-time">Just now</div></div>`;
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      };
+
+      window.handleChatKeyPress = function (e) {
+        if (e.key === "Enter") sendChatMessage();
+      };
+
+      window.toggleFAQ = function (el) {
+        el.classList.toggle("active");
+        const icon = el.querySelector("i");
+        if (icon)
+          icon.className = el.classList.contains("active")
+            ? "fas fa-chevron-down"
+            : "fas fa-chevron-right";
+      };
+
+      // ==================== SERVICE MODALS ====================
+      window.showServiceModal = function (service) {
+        const modalContent = document.getElementById("service-modal-content");
+        let content = "";
+        switch (service) {
+          case "heloc":
+            content = `<div class="modal-icon"><i class="fas fa-home"></i></div><h3>Home Equity Line of Credit</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Available Credit</span><span class="detail-value">$250,000</span></div><div class="detail-row"><span class="detail-label">Total Limit</span><span class="detail-value">$500,000</span></div><div class="detail-row"><span class="detail-label">Interest Rate</span><span class="detail-value">4.25% APR</span></div><div class="detail-row"><span class="detail-label">Next Payment</span><span class="detail-value">$1,250 (03/15/2026)</span></div></div><p>Access your home equity for renovations, debt consolidation, or major purchases. For assistance, contact Mabel at ${BANK_EMAIL}</p>`;
+            break;
+          case "tax-refund":
+            content = `<div class="modal-icon"><i class="fas fa-file-invoice-dollar"></i></div><h3>Tax Refund Status</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">2025 Refund</span><span class="detail-value">$5,847.93</span></div><div class="detail-row"><span class="detail-label">Status</span><span class="detail-value" style="color: #856404;">Processing</span></div><div class="detail-row"><span class="detail-label">Expected Deposit</span><span class="detail-value">03/20/2026</span></div></div><p>Track your refund and get it up to 5 days early with direct deposit. Questions? Email Mabel at ${BANK_EMAIL}</p>`;
+            break;
+          case "loans":
+            content = `<div class="modal-icon"><i class="fas fa-hand-holding-usd"></i></div><h3>Loan Summary</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Auto Loan</span><span class="detail-value">$12,450 @ 3.9%</span></div><div class="detail-row"><span class="detail-label">Personal Loan</span><span class="detail-value">$5,230 @ 5.9%</span></div><div class="detail-row"><span class="detail-label">Total Balance</span><span class="detail-value">$17,680</span></div></div><p>Manage your loans, make payments, or apply for additional financing. Contact Mabel at ${BANK_EMAIL} for assistance.</p>`;
+            break;
+          case "investments":
+            content = `<div class="modal-icon"><i class="fas fa-chart-line"></i></div><h3>Investment Portfolio</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Total Value</span><span class="detail-value">$847,231.45</span></div><div class="detail-row"><span class="detail-label">YTD Return</span><span class="detail-value" style="color: #28a745;">+12.3%</span></div><div class="detail-row"><span class="detail-label">Dividend Income</span><span class="detail-value">$8,452.33</span></div></div><p>View your portfolio performance and connect with financial advisors. Email Mabel at ${BANK_EMAIL} to schedule a consultation.</p>`;
+            break;
+          case "mortgage":
+            content = `<div class="modal-icon"><i class="fas fa-building"></i></div><h3>Mortgage Details</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Remaining Balance</span><span class="detail-value">$245,800</span></div><div class="detail-row"><span class="detail-label">Interest Rate</span><span class="detail-value">3.25% APR</span></div><div class="detail-row"><span class="detail-label">Monthly Payment</span><span class="detail-value">$1,875.00</span></div></div><p>Explore refinancing options or make extra payments to build equity faster. Contact Mabel at ${BANK_EMAIL} for more information.</p>`;
+            break;
+          case "credit":
+            content = `<div class="modal-icon"><i class="fas fa-credit-card"></i></div><h3>Credit Cards</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">SecureBank Rewards</span><span class="detail-value">$2,450 balance</span></div><div class="detail-row"><span class="detail-label">Available Credit</span><span class="detail-value">$17,550</span></div><div class="detail-row"><span class="detail-label">Rewards Points</span><span class="detail-value">45,230 pts</span></div></div><p>Premium rewards, travel benefits, and purchase protection. Email Mabel at ${BANK_EMAIL} for card inquiries.</p>`;
+            break;
+        }
+        modalContent.innerHTML = content;
+        serviceModal.classList.add("show");
+      };
+
+      window.showAccountDetails = function (accountType) {
+        const modalContent = document.getElementById("service-modal-content");
+        const balance =
+          accountType === "checking" ? balances.checking : balances.savings;
+        const accountNum = accountType === "checking" ? "4582" : "3391";
+        modalContent.innerHTML = `<div class="modal-icon"><i class="fas ${accountType === "checking" ? "fa-university" : "fa-piggy-bank"}"></i></div><h3>${accountType === "checking" ? "Checking" : "Savings"} Account</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Account Number</span><span class="detail-value">•••• ${accountNum}</span></div><div class="detail-row"><span class="detail-label">Current Balance</span><span class="detail-value">${formatCurrency(balance)}</span></div><div class="detail-row"><span class="detail-label">Account Holder</span><span class="detail-value">${OWNER_NAME}</span></div><div class="detail-row"><span class="detail-label">Interest Rate</span><span class="detail-value">${accountType === "checking" ? "0.01%" : "1.25%"}</span></div></div><p>${accountType === "checking" ? "Everyday spending and bill payments" : "Grow your savings with competitive interest"}. Need help? Contact Mabel at ${BANK_EMAIL}</p>`;
+        serviceModal.classList.add("show");
+      };
+
+      window.showCardDetails = function (cardType) {
+        const modalContent = document.getElementById("service-modal-content");
+        if (cardType === "physical") {
+          modalContent.innerHTML = `<div class="modal-icon"><i class="fas fa-credit-card"></i></div><h3>Physical Card</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Card Number</span><span class="detail-value">4582 1234 5678 9012</span></div><div class="detail-row"><span class="detail-label">Expiry Date</span><span class="detail-value">02/26</span></div><div class="detail-row"><span class="detail-label">CVV</span><span class="detail-value">123</span></div><div class="detail-row"><span class="detail-label">Status</span><span class="detail-value" style="color: #28a745;">Active</span></div></div><p>Tap card to pay, withdraw cash, and earn rewards on every purchase. For card issues, contact Mabel at ${BANK_EMAIL}</p>`;
+        } else {
+          modalContent.innerHTML = `<div class="modal-icon"><i class="fas fa-wifi"></i></div><h3>Virtual Card</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Card Number</span><span class="detail-value">7723 4567 8901 2345</span></div><div class="detail-row"><span class="detail-label">Expiry Date</span><span class="detail-value">02/26</span></div><div class="detail-row"><span class="detail-label">CVV</span><span class="detail-value">456</span></div><div class="detail-row"><span class="detail-label">Status</span><span class="detail-value" style="color: #fbbf24;">Inactive</span></div></div><p>Use for online shopping and digital wallets. Activate in settings. Questions? Email Mabel at ${BANK_EMAIL}</p>`;
+        }
+        serviceModal.classList.add("show");
+      };
+
+      window.showTransactionDetails = function (transactionId) {
+        const t = transactions.find((t) => t.id === transactionId);
+        if (!t) return;
+        const modalContent = document.getElementById("service-modal-content");
+        modalContent.innerHTML = `<div class="modal-icon"><i class="fas ${t.type === "incoming" ? "fa-arrow-down" : "fa-arrow-up"}"></i></div><h3>Transaction Details</h3><div class="modal-details"><div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">${t.description}</span></div><div class="detail-row"><span class="detail-label">Amount</span><span class="detail-value" style="color: ${t.type === "incoming" ? "#28a745" : "#dc3545"};">${t.type === "incoming" ? "+" : "-"}${formatCurrency(t.amount)}</span></div><div class="detail-row"><span class="detail-label">Date</span><span class="detail-value">${new Date(t.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span></div><div class="detail-row"><span class="detail-label">Account</span><span class="detail-value">${t.account}</span></div><div class="detail-row"><span class="detail-label">Status</span><span class="detail-value" style="color: ${t.status === "completed" ? "#28a745" : "#856404"};">${t.status}</span></div></div><p>For questions about this transaction, contact Mabel at ${BANK_EMAIL}</p>`;
+        serviceModal.classList.add("show");
+      };
+
+      window.showHelocDetails = () => showServiceModal("heloc");
+      window.showTaxRefundDetails = () => showServiceModal("tax-refund");
+      window.showLoanDetails = () => showServiceModal("loans");
+      window.showInvestmentDetails = () => showServiceModal("investments");
+      window.showMortgageDetails = () => showServiceModal("mortgage");
+
+      // Toggle switches
+      window.toggleNotification = (el) => el.classList.toggle("active");
+      window.toggle2FA = (el) => el.classList.toggle("active");
+      window.toggleBiometric = (el) => el.classList.toggle("active");
+      window.toggleContactless = (el) => el.classList.toggle("active");
+      window.toggleInternational = (el) => el.classList.toggle("active");
+      window.toggleEmailStatements = (el) => el.classList.toggle("active");
+      window.toggleSMSAlerts = (el) => el.classList.toggle("active");
+
+      // ==================== MOBILE MENU ====================
+      function setupMobileMenu() {
+        if (menuToggle && sidebar) {
+          menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+          });
+        }
+      }
+
+      // ==================== EVENT LISTENERS ====================
+      function setupEventListeners() {
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          login(
+            document.getElementById("username").value.trim(),
+            document.getElementById("password").value,
+          );
+        });
+        setupTransferForm();
+      }
+
+      // ==================== START ====================
+      document.addEventListener("DOMContentLoaded", init);
+    
+    // ==================== CHECK DEPOSIT WITH CAMERA (FRONT & BACK) ====================
+// ==================== CHECK DEPOSIT WITH CAMERA (FRONT & BACK) ====================
+let frontImageData = null;
+let backImageData = null;
+
+function setupDepositCamera() {
+  const depositBtn = document.getElementById("deposit-check-btn");
+  const depositModal = document.getElementById("deposit-modal");
+  
+  if (!depositModal) return;
+  
+  // Get modal close button
+  const closeModalBtn = depositModal.querySelector(".close-modal");
+  
+  // Elements for each step
+  const frontSection = document.getElementById("front-section");
+  const backSection = document.getElementById("back-section");
+  const reviewSection = document.getElementById("review-section");
+  
+  // Step indicator elements
+  const stepFrontCircle = document.getElementById("step-front-circle");
+  const stepFrontStatus = document.getElementById("step-front-status");
+  const stepBackDiv = document.getElementById("step-back");
+  const stepBackCircle = document.getElementById("step-back-circle");
+  const stepBackStatus = document.getElementById("step-back-status");
+  const stepReviewDiv = document.getElementById("step-review");
+  const stepReviewCircle = document.getElementById("step-review-circle");
+  const stepReviewStatus = document.getElementById("step-review-status");
+  
+  // Front elements
+  const frontCameraBtn = document.getElementById("front-camera-btn");
+  const frontUploadBtn = document.getElementById("front-upload-btn");
+  const frontImageInput = document.getElementById("front-image-input");
+  const frontPreview = document.getElementById("front-preview");
+  const frontPreviewImg = document.getElementById("front-preview-img");
+  const frontVerifying = document.getElementById("front-verifying");
+  const frontVerifiedText = document.getElementById("front-verified-text");
+  const nextToBack = document.getElementById("next-to-back");
+  
+  // Back elements
+  const backCameraBtn = document.getElementById("back-camera-btn");
+  const backUploadBtn = document.getElementById("back-upload-btn");
+  const backImageInput = document.getElementById("back-image-input");
+  const backPreview = document.getElementById("back-preview");
+  const backPreviewImg = document.getElementById("back-preview-img");
+  const backVerifying = document.getElementById("back-verifying");
+  const backVerifiedText = document.getElementById("back-verified-text");
+  const nextToReview = document.getElementById("next-to-review");
+  const backToFront = document.getElementById("back-to-front");
+  
+  // Review elements
+  const reviewFrontImg = document.getElementById("review-front-img");
+  const reviewBackImg = document.getElementById("review-back-img");
+  const reviewBackBtn = document.getElementById("review-back-btn");
+  const confirmBtn = document.getElementById("confirm-deposit-btn");
+  const depositMessage = document.getElementById("deposit-message");
+  
+  // Reset function
+  function resetDepositForm() {
+    frontImageData = null;
+    backImageData = null;
+    
+    if (frontPreview) frontPreview.style.display = "none";
+    if (backPreview) backPreview.style.display = "none";
+    if (frontVerifying) frontVerifying.style.display = "none";
+    if (backVerifying) backVerifying.style.display = "none";
+    if (frontVerifiedText) frontVerifiedText.style.display = "none";
+    if (backVerifiedText) backVerifiedText.style.display = "none";
+    if (nextToBack) nextToBack.disabled = true;
+    if (nextToReview) nextToReview.disabled = true;
+    
+    if (frontSection) frontSection.style.display = "block";
+    if (backSection) backSection.style.display = "none";
+    if (reviewSection) reviewSection.style.display = "none";
+    
+    // Reset step indicators
+    if (stepFrontCircle) {
+      stepFrontCircle.style.background = "#d4a017";
+      stepFrontCircle.style.color = "white";
+    }
+    if (stepFrontStatus) {
+      stepFrontStatus.innerHTML = "Pending";
+      stepFrontStatus.style.color = "#999";
+    }
+    if (stepBackDiv) stepBackDiv.style.opacity = "0.5";
+    if (stepBackCircle) {
+      stepBackCircle.style.background = "#ccc";
+      stepBackCircle.style.color = "#666";
+    }
+    if (stepBackStatus) {
+      stepBackStatus.innerHTML = "Pending";
+      stepBackStatus.style.color = "#999";
+    }
+    if (stepReviewDiv) stepReviewDiv.style.opacity = "0.5";
+    if (stepReviewCircle) {
+      stepReviewCircle.style.background = "#ccc";
+      stepReviewCircle.style.color = "#666";
+    }
+    if (stepReviewStatus) {
+      stepReviewStatus.innerHTML = "Waiting";
+      stepReviewStatus.style.color = "#999";
+    }
+    
+    const amountInput = document.getElementById("deposit-amount");
+    const checkNumberInput = document.getElementById("check-number");
+    if (amountInput) amountInput.value = "";
+    if (checkNumberInput) checkNumberInput.value = "";
+    if (depositMessage) depositMessage.innerHTML = "";
+    if (frontImageInput) frontImageInput.value = "";
+    if (backImageInput) backImageInput.value = "";
+  }
+  
+  // Function to verify front image with 3-second delay
+  function verifyFrontImage() {
+    if (frontVerifying) frontVerifying.style.display = "block";
+    
+    setTimeout(() => {
+      if (frontVerifying) frontVerifying.style.display = "none";
+      if (frontVerifiedText) frontVerifiedText.style.display = "block";
+      if (nextToBack) nextToBack.disabled = false;
+      
+      // Update step indicator to VERIFIED (green)
+      if (stepFrontCircle) {
+        stepFrontCircle.style.background = "#28a745";
+        stepFrontCircle.style.color = "white";
+      }
+      if (stepFrontStatus) {
+        stepFrontStatus.innerHTML = "✓ Verified";
+        stepFrontStatus.style.color = "#28a745";
+      }
+    }, 3000);
+  }
+  
+  // Function to verify back image with 3-second delay
+  function verifyBackImage() {
+    if (backVerifying) backVerifying.style.display = "block";
+    
+    setTimeout(() => {
+      if (backVerifying) backVerifying.style.display = "none";
+      if (backVerifiedText) backVerifiedText.style.display = "block";
+      if (nextToReview) nextToReview.disabled = false;
+      
+      // Update step indicator to VERIFIED (green)
+      if (stepBackCircle) {
+        stepBackCircle.style.background = "#28a745";
+        stepBackCircle.style.color = "white";
+      }
+      if (stepBackStatus) {
+        stepBackStatus.innerHTML = "✓ Verified";
+        stepBackStatus.style.color = "#28a745";
+      }
+    }, 3000);
+  }
+  
+  // Open modal
+  if (depositBtn) {
+    depositBtn.onclick = () => {
+      resetDepositForm();
+      depositModal.classList.add("show");
+    };
+  }
+  
+  // CLOSE MODAL FUNCTION - X BUTTON
+  if (closeModalBtn) {
+    closeModalBtn.onclick = () => {
+      depositModal.classList.remove("show");
+      resetDepositForm();
+    };
+  }
+  
+  // Front image handler
+  function handleFrontImage(file) {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        frontImageData = e.target.result;
+        if (frontPreviewImg) frontPreviewImg.src = frontImageData;
+        if (frontPreview) frontPreview.style.display = "block";
+        verifyFrontImage();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  if (frontCameraBtn) {
+    frontCameraBtn.onclick = () => {
+      frontImageInput.setAttribute("capture", "environment");
+      frontImageInput.click();
+    };
+  }
+  
+  if (frontUploadBtn) {
+    frontUploadBtn.onclick = () => {
+      frontImageInput.removeAttribute("capture");
+      frontImageInput.click();
+    };
+  }
+  
+  if (frontImageInput) {
+    frontImageInput.onchange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFrontImage(e.target.files[0]);
+      }
+    };
+  }
+  
+  // Next to back
+  if (nextToBack) {
+    nextToBack.onclick = () => {
+      if (frontSection) frontSection.style.display = "none";
+      if (backSection) backSection.style.display = "block";
+      if (stepBackDiv) stepBackDiv.style.opacity = "1";
+    };
+  }
+  
+  // Back image handler
+  function handleBackImage(file) {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        backImageData = e.target.result;
+        if (backPreviewImg) backPreviewImg.src = backImageData;
+        if (backPreview) backPreview.style.display = "block";
+        verifyBackImage();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  if (backCameraBtn) {
+    backCameraBtn.onclick = () => {
+      backImageInput.setAttribute("capture", "environment");
+      backImageInput.click();
+    };
+  }
+  
+  if (backUploadBtn) {
+    backUploadBtn.onclick = () => {
+      backImageInput.removeAttribute("capture");
+      backImageInput.click();
+    };
+  }
+  
+  if (backImageInput) {
+    backImageInput.onchange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleBackImage(e.target.files[0]);
+      }
+    };
+  }
+  
+  // Back to front
+  if (backToFront) {
+    backToFront.onclick = () => {
+      if (backSection) backSection.style.display = "none";
+      if (frontSection) frontSection.style.display = "block";
+      if (stepBackDiv) stepBackDiv.style.opacity = "0.5";
+    };
+  }
+  
+  // Next to review
+  if (nextToReview) {
+    nextToReview.onclick = () => {
+      if (reviewFrontImg) reviewFrontImg.src = frontImageData;
+      if (reviewBackImg) reviewBackImg.src = backImageData;
+      if (backSection) backSection.style.display = "none";
+      if (reviewSection) reviewSection.style.display = "block";
+      
+      if (stepReviewDiv) stepReviewDiv.style.opacity = "1";
+      if (stepReviewCircle) {
+        stepReviewCircle.style.background = "#d4a017";
+        stepReviewCircle.style.color = "white";
+      }
+      if (stepReviewStatus) {
+        stepReviewStatus.innerHTML = "Ready to Submit";
+        stepReviewStatus.style.color = "#d4a017";
+      }
+    };
+  }
+  
+  // Review back to back
+  if (reviewBackBtn) {
+    reviewBackBtn.onclick = () => {
+      if (reviewSection) reviewSection.style.display = "none";
+      if (backSection) backSection.style.display = "block";
+      if (stepReviewDiv) stepReviewDiv.style.opacity = "0.5";
+    };
+  }
+  
+  // ========== CONFIRM DEPOSIT - ALWAYS FAILS ==========
+  if (confirmBtn) {
+    confirmBtn.onclick = () => {
+      const amount = parseFloat(document.getElementById("deposit-amount").value);
+      const checkNumber = document.getElementById("check-number").value.trim() || "N/A";
+      const account = document.getElementById("deposit-account").value;
+      
+      // Validate amount
+      if (!amount || amount <= 0) {
+        if (depositMessage) depositMessage.innerHTML = '<span style="color:#c33;">❌ Please enter a valid amount</span>';
+        return;
+      }
+      
+      // Validate images
+      if (!frontImageData || !backImageData) {
+        if (depositMessage) depositMessage.innerHTML = '<span style="color:#c33;">❌ Please capture both front and back of check</span>';
+        return;
+      }
+      
+      // Update step 3 status to processing
+      if (stepReviewStatus) {
+        stepReviewStatus.innerHTML = "Processing...";
+        stepReviewStatus.style.color = "#d4a017";
+      }
+      
+      // Disable button and show processing
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
+      if (depositMessage) depositMessage.innerHTML = '<span style="color:#d4a017;">⏳ Verifying check with bank...</span>';
+      
+      // 3-second delay for processing
+      setTimeout(() => {
+        // ALWAYS FAIL - Bank error message
+        const errorMessages = [
+          "❌ Unable to process your check deposit at this moment. Please try again later.",
+          "❌ Check verification failed. Unable to process your deposit at this time.",
+          "❌ Your check could not be verified. Unable to process deposit at this moment.",
+          "❌ Bank system error: Unable to process your check deposit. Please try again.",
+          "❌ Unable to complete deposit. Please visit a branch or try again later.",
+        ];
+        const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+        
+        if (depositMessage) {
+          depositMessage.innerHTML = `<span style="color:#c33;">${randomError}</span>`;
+        }
+        
+        // Update step 3 status to failed
+        if (stepReviewStatus) {
+          stepReviewStatus.innerHTML = "✗ Failed";
+          stepReviewStatus.style.color = "#c33";
+        }
+        if (stepReviewCircle) {
+          stepReviewCircle.style.background = "#c33";
+        }
+        
+        // Re-enable button but keep modal open
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = "Try Again";
+        
+        // Auto clear error message after 5 seconds
+        setTimeout(() => {
+          if (depositMessage && depositMessage.innerHTML.includes("Unable to process")) {
+            depositMessage.innerHTML = "";
+          }
+        }, 5000);
+        
+      }, 3000); // 3 SECOND DELAY
+    };
+  }
+  
+  // Close modal when clicking outside
+  window.addEventListener("click", function(e) {
+    if (e.target === depositModal) {
+      depositModal.classList.remove("show");
+      resetDepositForm();
+    }
+  });
+}
+  
+ 
+// ==================== TRANSFER MENU FUNCTIONS ====================
+
+function setupTransferMenu() {
+  const transferBtn = document.getElementById("transfer-menu-btn");
+  const optionsModal = document.getElementById("transfer-options-modal");
+  const internalOption = document.getElementById("internal-transfer-option");
+  const externalOption = document.getElementById("external-transfer-option");
+  const internalModal = document.getElementById("internal-transfer-modal");
+  const externalModal = document.getElementById("external-transfer-modal");
+
+  // Open transfer options when Transfer button is clicked
+  if (transferBtn) {
+    transferBtn.onclick = () => {
+      if (optionsModal) optionsModal.classList.add("show");
+    };
+  }
+
+  // Internal Transfer option
+  if (internalOption) {
+    internalOption.onclick = () => {
+      if (optionsModal) optionsModal.classList.remove("show");
+      // Update balance displays
+      const checkingSpan = document.getElementById("internal-checking-balance");
+      const savingsSpan = document.getElementById("internal-savings-balance");
+      if (checkingSpan) checkingSpan.textContent = formatCurrency(balances.checking).replace("$", "");
+      if (savingsSpan) savingsSpan.textContent = formatCurrency(balances.savings).replace("$", "");
+      if (internalModal) internalModal.classList.add("show");
+    };
+  }
+
+  // External Transfer option
+  if (externalOption) {
+    externalOption.onclick = () => {
+      if (optionsModal) optionsModal.classList.remove("show");
+      // Update balance displays
+      const checkingSpan = document.getElementById("external-checking-balance");
+      const savingsSpan = document.getElementById("external-savings-balance");
+      if (checkingSpan) checkingSpan.textContent = formatCurrency(balances.checking).replace("$", "");
+      if (savingsSpan) savingsSpan.textContent = formatCurrency(balances.savings).replace("$", "");
+      if (externalModal) externalModal.classList.add("show");
+    };
+  }
+
+  // Close modals when clicking X or Cancel
+  const closeButtons = document.querySelectorAll(".close-modal, .modal-close");
+  closeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (optionsModal) optionsModal.classList.remove("show");
+      if (internalModal) internalModal.classList.remove("show");
+      if (externalModal) externalModal.classList.remove("show");
+    });
+  });
+
+  // Close when clicking outside
+  window.addEventListener("click", (e) => {
+    if (e.target === optionsModal) optionsModal.classList.remove("show");
+    if (e.target === internalModal) internalModal.classList.remove("show");
+    if (e.target === externalModal) externalModal.classList.remove("show");
+  });
+}
+
+// Internal Transfer Function
+function setupInternalTransfer() {
+  const confirmBtn = document.getElementById("confirm-internal-transfer");
+  if (!confirmBtn) return;
+  
+  confirmBtn.onclick = () => {
+    const from = document.getElementById("internal-from-account").value;
+    const to = document.getElementById("internal-to-account").value;
+    const amount = parseFloat(document.getElementById("internal-amount").value);
+    const msgDiv = document.getElementById("internal-transfer-message");
+    
+    if (!amount || amount <= 0) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Enter a valid amount</span>';
+      return;
+    }
+    if (amount > balances[from]) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Insufficient funds</span>';
+      return;
+    }
+    if (from === to) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Cannot transfer to same account</span>';
+      return;
+    }
+    
+    // Process transfer
+    balances[from] -= amount;
+    balances[to] += amount;
+    updateBalances();
+    
+    // Add transaction
+    const newTx = {
+      id: Date.now(),
+      type: "outgoing",
+      amount: amount,
+      description: `Internal Transfer (${from} → ${to})`,
+      date: new Date().toISOString().split("T")[0],
+      account: from,
+      accountName: OWNER_NAME,
+      status: "completed",
+    };
+    transactions.unshift(newTx);
+    saveTransactions();
+    renderTransactions();
+    
+    msgDiv.innerHTML = `<span style="color:#28a745;">✅ Sent $${amount.toFixed(2)} from ${from} to ${to}</span>`;
+    document.getElementById("internal-amount").value = "";
+    
+    // Close modal after 1.5 seconds
+    setTimeout(() => {
+      document.getElementById("internal-transfer-modal").classList.remove("show");
+    }, 1500);
+  };
+}
+
+// External Transfer Function
+function setupExternalTransfer() {
+  const confirmBtn = document.getElementById("confirm-external-transfer");
+  if (!confirmBtn) return;
+  
+  confirmBtn.onclick = () => {
+    const from = document.getElementById("external-from-account").value;
+    const toAcc = document.getElementById("external-to-account").value.trim();
+    const bankName = document.getElementById("external-bank-name").value.trim();
+    const accName = document.getElementById("external-account-name").value.trim();
+    const amount = parseFloat(document.getElementById("external-amount").value);
+    const msgDiv = document.getElementById("external-transfer-message");
+    
+    if (!toAcc || !bankName || !accName) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Please fill all fields</span>';
+      return;
+    }
+    if (!amount || amount <= 0) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Enter a valid amount</span>';
+      return;
+    }
+    if (amount > balances[from]) {
+      msgDiv.innerHTML = '<span style="color:#c33;">❌ Insufficient funds</span>';
+      return;
+    }
+    
+    // Disable button and show processing
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
+    
+    // 3-second delay for external transfer
+    setTimeout(() => {
+      balances[from] -= amount;
+      updateBalances();
+      
+      // Save to known recipients for future auto-fill
+      if (!knownRecipients[toAcc]) {
+        knownRecipients[toAcc] = accName;
+        localStorage.setItem("knownRecipients", JSON.stringify(knownRecipients));
+      }
+      if (!knownBanks[toAcc]) {
+        knownBanks[toAcc] = bankName;
+        localStorage.setItem("knownBanks", JSON.stringify(knownBanks));
+      }
+      
+      const newTx = {
+        id: Date.now(),
+        type: "outgoing",
+        amount: amount,
+        description: `External Transfer to ${accName} at ${bankName}`,
+        date: new Date().toISOString().split("T")[0],
+        account: from,
+        accountName: accName,
+        status: "pending",
+      };
+      transactions.unshift(newTx);
+      saveTransactions();
+      renderTransactions();
+      
+      msgDiv.innerHTML = `<span style="color:#28a745;">✅ Sent $${amount.toFixed(2)} to ${accName}. Transaction pending.</span>`;
+      
+      // Clear form
+      document.getElementById("external-to-account").value = "";
+      document.getElementById("external-bank-name").value = "";
+      document.getElementById("external-account-name").value = "";
+      document.getElementById("external-amount").value = "";
+      
+      // Re-enable button
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = "Send Money";
+      
+      // Close modal after 1.5 seconds
+      setTimeout(() => {
+        document.getElementById("external-transfer-modal").classList.remove("show");
+      }, 1500);
+    }, 3000); // 3-second delay
+  };
+}
+
+ {
+  // ... your existing code ...
+  setupTransferMenu();      // ← ADD THIS
+  setupInternalTransfer();  // ← ADD THIS
+  setupExternalTransfer();  // ← ADD THIS
+}
+
+function showDashboard() {
+  loginScreen.classList.remove("active");
+  dashboard.classList.add("active");
+  updateUserContent();
+  updateGreeting();
+  loadTransactions();
+  updateBalances();
+  renderTransactions();
+  updateBalanceDisplays();
+  
+  setupDepositCamera();  // ← ADD THIS LINE
+}
+
+ {
+  // ... other code ...
+  updateGreeting();
+  setInterval(updateGreeting, 60000); // Updates every minute
+  // ... rest of code
+}
+
+ {
+  // ... other code ...
+  updateGreeting(); // ← Make sure this is here
+  // ... rest of code
+}
+
+// ==================== SECURITY QUESTION VERIFICATION ====================
+// Set the correct answer for "What was your first car?"
+const CORRECT_SECURITY_ANSWER = "honda"; // Answer: honda (case-insensitive)
+
+function setupSecurityVerification() {
+  const verifyBtn = document.getElementById("verify-security-btn");
+  const securityModal = document.getElementById("security-modal");
+  const securityAnswer = document.getElementById("security-answer");
+  const securityMessage = document.getElementById("security-message");
+  
+  if (!verifyBtn) return;
+  
+  // Reset attempts counter
+  window.securityAttempts = 0;
+  
+  verifyBtn.onclick = () => {
+    const userAnswer = securityAnswer.value.trim().toLowerCase();
+    
+    if (!userAnswer) {
+      securityMessage.innerHTML = '<span style="color:#c33;">❌ Please enter your answer</span>';
+      return;
+    }
+    
+    if (userAnswer === CORRECT_SECURITY_ANSWER) {
+      // Correct answer
+      securityMessage.innerHTML = '<span style="color:#28a745;">✓ Verification successful! Loading dashboard...</span>';
+      
+      setTimeout(() => {
+        securityModal.classList.remove("show");
+        showDashboard();
+        window.securityAttempts = 0;
+      }, 1000);
+    } else {
+      // Wrong answer
+      securityMessage.innerHTML = '<span style="color:#c33;">❌ Incorrect answer. Please try again.</span>';
+      securityAnswer.value = "";
+      securityAnswer.focus();
+      
+      // Shake animation
+      const modalContent = securityModal.querySelector(".modal-content");
+      modalContent.style.animation = "shake 0.5s";
+      setTimeout(() => {
+        modalContent.style.animation = "";
+      }, 500);
+      
+      window.securityAttempts++;
+      
+      if (window.securityAttempts >= 3) {
+        securityMessage.innerHTML = '<span style="color:#c33;">❌ Too many failed attempts. Returning to login.</span>';
+        setTimeout(() => {
+          securityModal.classList.remove("show");
+          loginScreen.classList.add("active");
+          dashboard.classList.remove("active");
+          window.securityAttempts = 0;
+          document.getElementById("username").value = "";
+          document.getElementById("password").value = "";
+        }, 2000);
+      }
+    }
+  };
+  
+  // Handle Enter key
+  if (securityAnswer) {
+    securityAnswer.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        verifyBtn.click();
+      }
+    });
+  }
+}
+
+function init() {
+  loginScreen.classList.add("active");
+  dashboard.classList.remove("active");
+  updateClock();
+  setInterval(updateClock, 1000);
+  updateGreeting();
+  setInterval(updateGreeting, 60000);
+  checkSavedSession();
+  initDarkMode();
+  setupEventListeners();
+  setupModals();
+  setupMobileMenu();
+  setupAccountNameAutoFill();
+  setupProfilePicture();
+  loadSavedProfilePicture();
+  
+  setupSecurityVerification(); // ← ADD THIS LINE
+  setupDepositCamera(); // ← ADD THIS LINE
+}
+
+
+
+
+    </script>
+  </body>
+</html>
