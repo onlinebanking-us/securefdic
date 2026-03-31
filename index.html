@@ -1997,6 +1997,113 @@
     display: none !important; /* Hide on very small screens if needed */
   }
 }
+/* PIN Input Styles */
+.pin-input-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.pin-digit {
+  width: 50px;
+  height: 60px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+}
+
+/* Green Validation Styles */
+.form-group input.valid,
+.form-group select.valid {
+  border-color: #28a745 !important;
+  background-color: #e8f5e8 !important;
+}
+.form-group input.invalid {
+  border-color: #dc3545 !important;
+  background-color: #fee7e7 !important;
+}
+
+/* Transfer Options Grid */
+.transfer-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.transfer-option-card {
+  background: white;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 2px solid transparent;
+}
+.transfer-option-card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(135deg, #d4a017, #966f33);
+  color: white;
+}
+.transfer-option-card i {
+  font-size: 2.5rem;
+  color: #d4a017;
+  margin-bottom: 1rem;
+}
+.transfer-option-card:hover i { color: white; }
+.transfer-option-card h3 { margin-bottom: 0.5rem; }
+.transfer-option-card p { font-size: 0.85rem; opacity: 0.8; }
+
+.transfer-form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 600px;
+  margin-top: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.btn-back {
+  background: none;
+  border: none;
+  color: #d4a017;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-back:hover { text-decoration: underline; }
+.transfer-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.transfer-sub-header {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.sub-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+body.dark-mode .transfer-sub-header { background: #2a2f3f; }
+.form-group small {
+  display: block;
+  font-size: 0.7rem;
+  color: #999;
+  margin-top: 0.25rem;
+}
+
 
 </style>
     </style>
@@ -2324,7 +2431,7 @@
         <main class="main-content">
           <!-- Overview -->
           <section id="overview-view" class="view active">
-            <h2 id="welcome-heading">Welcome back</h2>
+          <h2 id="welcome-heading">Welcome back, Joshua</h2>
             <div class="main-account-card">
               <span class="account-label">Primary Checking</span>
               <span class="main-balance" id="checking-balance"
@@ -2439,66 +2546,45 @@
          
              <!-- Transfer -->
 <section id="transfer-view" class="view">
-  <h2>Transfer</h2>
-  <form id="transfer-form" class="transfer-form">
-    <div class="form-group">
-      <label>From Account</label>
-      <select id="from-account">
-        <option value="checking">
-          Checking (••••4582) – $<span id="checking-balance-display">32,
-            560.12</span>
-        </option>
-        <option value="savings">
-          Savings (••••3391) – $<span id="savings-balance-display">3,745.00</span>
-        </option>
-      </select>
+  <h2>Transfer Money</h2>
+  
+  <!-- Transfer Options Grid -->
+  <div class="transfer-options-grid" id="transfer-options-grid">
+    <div class="transfer-option-card" data-transfer-type="international">
+      <i class="fas fa-globe-americas"></i>
+      <h3>International Transfer</h3>
+      <p>Send money worldwide</p>
     </div>
-    
-    <div class="form-group">
-      <label>Recipient Account Number</label>
-      <input type="text" id="to-account" placeholder="Enter account number" required />
+    <div class="transfer-option-card" data-transfer-type="domestic">
+      <i class="fas fa-home"></i>
+      <h3>Domestic Transfer</h3>
+      <p>Within the same country</p>
     </div>
-    
-    <div class="form-group">
-      <label>Recipient Bank Name</label>
-      <input type="text" id="bank-name" placeholder="Enter bank name" required />
+  </div>
+
+  <!-- Domestic Sub-Options -->
+  <div id="domestic-sub-options" class="transfer-sub-options" style="display: none;">
+    <div class="transfer-sub-header">
+      <button id="back-to-main" class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+      <h3>Select Domestic Transfer Type</h3>
     </div>
-    
-    <div class="form-group">
-      <label>Recipient Routing Number</label>
-      <input type="text" id="routing-number" placeholder="Enter routing number" required />
-    </div>
-    
-    <div class="form-group">
-      <label>Recipient Name</label>
-      <input type="text" id="account-name" placeholder="Enter recipient name" required />
-    </div>
-    
-    <div class="form-group">
-      <label>Amount ($)</label>
-      <div class="amount-input">
-        <span>$</span>
-        <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" required />
+    <div class="sub-options-grid">
+      <div class="transfer-option-card" data-domestic-type="wire">
+        <i class="fas fa-bolt"></i>
+        <h3>Wire Transfer</h3>
+        <p>Same-day urgent transfers</p>
+        <small>Fee: $25.00</small>
+      </div>
+      <div class="transfer-option-card" data-domestic-type="ach">
+        <i class="fas fa-building"></i>
+        <h3>ACH Transfer</h3>
+        <p>Standard 1-3 business days</p>
+        <small>Fee: $0.00</small>
       </div>
     </div>
-    
-    <div class="form-group">
-      <label>Description (optional)</label>
-      <input type="text" id="description" placeholder="e.g., Rent" />
-    </div>
-    
-    <div class="security-badge">
-      <i class="fas fa-shield-alt"></i>
-      <div class="security-badge-text">
-        <h4>🔒 Bank-Grade Security</h4>
-        <p>Your transfer is encrypted with 256-bit SSL and monitored 24/7</p>
-      </div>
-    </div>
-    
-    <button type="submit" class="btn btn-primary transfer-btn" id="send-money-btn">
-      <i class="fas fa-paper-plane"></i> Send Money
-    </button>
-  </form>
+  </div>
+
+  <div id="transfer-form-container"></div>
   <div id="transfer-message" class="message"></div>
 </section>
           <!-- Transactions -->
@@ -3780,6 +3866,58 @@
   </div>
 </div>
 
+<!-- Confirmation Modal -->
+<div id="confirmation-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div style="text-align: center;">
+      <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #d4a017; margin-bottom: 1rem;"></i>
+      <h3>Confirm Transfer</h3>
+      <p id="confirmation-message" style="margin: 1rem 0; font-weight: 500;">Are you sure you want to make this transfer?</p>
+      <p style="color: #dc3545; font-size: 0.9rem; margin-bottom: 1rem;"><i class="fas fa-ban"></i> WARNING: Money sent cannot be reversed!</p>
+      <div id="transfer-details" style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; margin: 1rem 0; text-align: left;"></div>
+      <button id="confirm-transfer-btn" class="btn-primary" style="width: 100%; margin-bottom: 0.5rem;">Proceed to PIN Verification →</button>
+      <button id="cancel-transfer-btn" class="btn" style="width: 100%; background: #ccc; color: #333;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN Verification Modal -->
+<div id="pin-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div style="text-align: center;">
+      <i class="fas fa-lock" style="font-size: 3rem; color: #d4a017; margin-bottom: 1rem;"></i>
+      <h3>Enter 6-Digit PIN</h3>
+      <p>Please enter your transaction PIN to complete the transfer</p>
+      <div class="pin-input-group">
+        <input type="password" maxlength="1" class="pin-digit" id="pin-1" autofocus>
+        <input type="password" maxlength="1" class="pin-digit" id="pin-2">
+        <input type="password" maxlength="1" class="pin-digit" id="pin-3">
+        <input type="password" maxlength="1" class="pin-digit" id="pin-4">
+        <input type="password" maxlength="1" class="pin-digit" id="pin-5">
+        <input type="password" maxlength="1" class="pin-digit" id="pin-6">
+      </div>
+      <div id="pin-error" style="color: #dc3545; font-size: 0.85rem; margin: 0.5rem 0; display: none;">Incorrect PIN. Please try again.</div>
+      <button id="verify-pin-btn" class="btn-primary" style="width: 100%;">Verify PIN</button>
+      <button id="cancel-pin-btn" class="btn" style="width: 100%; margin-top: 0.5rem; background: #ccc; color: #333;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receipt-modal" class="modal">
+  <div class="modal-content" style="max-width: 500px;">
+    <span class="close-modal">&times;</span>
+    <div style="text-align: center;">
+      <i class="fas fa-receipt" style="font-size: 3rem; color: #d4a017; margin-bottom: 1rem;"></i>
+      <h3>Transaction Receipt</h3>
+      <div id="receipt-details" style="background: #f9f9f9; padding: 1rem; border-radius: 0.75rem; margin: 1rem 0; text-align: left;"></div>
+      <button class="btn-primary modal-close" style="width: 100%;">Close</button>
+    </div>
+  </div>
+</div>
+
     <script>
       // ==================== STATE ====================
       
@@ -4155,26 +4293,58 @@
       const profilePic = document.getElementById("profile-pic");
       const profileInitial = document.querySelector(".profile-initial");
 
-      // ==================== INITIALIZATION ====================
-      function init() {
-        loginScreen.classList.add("active");
-        dashboard.classList.remove("active");
+      const transferFormContainer = document.getElementById("transfer-form-container");
+const transferOptionsGrid = document.getElementById("transfer-options-grid");
+const confirmationModal = document.getElementById("confirmation-modal");
+const pinModal = document.getElementById("pin-modal");
+const confirmTransferBtn = document.getElementById("confirm-transfer-btn");
+const cancelTransferBtn = document.getElementById("cancel-transfer-btn");
+const verifyPinBtn = document.getElementById("verify-pin-btn");
+const cancelPinBtn = document.getElementById("cancel-pin-btn");
 
-        updateClock();
-        setInterval(updateClock, 1000);
 
-        updateGreeting();
-        setInterval(updateGreeting, 60000);
 
-        checkSavedSession();
-        initDarkMode();
-        setupEventListeners();
-        setupModals();
-        setupMobileMenu();
-        setupAccountNameAutoFill();
-        setupProfilePicture();
-        loadSavedProfilePicture();
-      }
+
+//       Update transfer functions to show receipt
+
+function showReceipt(tx) {
+  const receiptDetails = document.getElementById("receipt-details");
+  receiptDetails.innerHTML = `
+    <p><strong>Transaction ID:</strong> ${tx.id}</p>
+    <p><strong>Type:</strong> ${tx.type}</p>
+    <p><strong>Amount:</strong> ${formatCurrency(tx.amount)}</p>
+    <p><strong>Recipient:</strong> ${tx.recipient}</p>
+    <p><strong>Date:</strong> ${tx.date}</p>
+    <p><strong>Description:</strong> ${tx.description}</p>
+    <p><strong>Status:</strong> <span style="color: ${tx.status === 'completed' ? '#28a745' : '#856404'}">${tx.status.toUpperCase()}</span></p>
+  `;
+  const receiptModal = document.getElementById("receipt-modal");
+  if (receiptModal) receiptModal.classList.add("show");
+}
+
+   function init() {
+  loginScreen.classList.add("active");
+  dashboard.classList.remove("active");
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  updateGreeting();
+  setInterval(updateGreeting, 60000);
+
+  checkSavedSession();
+  initDarkMode();
+  setupEventListeners();
+  setupModals();
+  setupMobileMenu();
+  setupAccountNameAutoFill();
+  setupProfilePicture();
+  loadSavedProfilePicture();
+  
+  setupSecurityVerification();
+  setupDepositCamera();  // This will now work correctly
+  setupPinInputs();
+}
 
       // Live clock
       function updateClock() {
@@ -4191,14 +4361,21 @@
 
       // Greeting
       function updateGreeting() {
-        const hour = new Date().getHours();
-        let greeting = "";
-        if (hour >= 5 && hour < 12) greeting = "Good Morning";
-        else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
-        else if (hour >= 17 && hour < 21) greeting = "Good Evening";
-        else greeting = "Good Night";
-        if (greetingUserSpan) greetingUserSpan.textContent = greeting;
-      }
+  const hour = new Date().getHours();
+  let greeting = "";
+  if (hour >= 5 && hour < 12) greeting = "Good Morning";
+  else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+  else if (hour >= 17 && hour < 21) greeting = "Good Evening";
+  else greeting = "Good Night";
+  
+  if (greetingUserSpan) {
+    if (currentUser) {
+      greetingUserSpan.textContent = `${greeting}, ${OWNER_NAME.split(" ")[0]}`;
+    } else {
+      greetingUserSpan.textContent = greeting;
+    }
+  }
+}
 
       
 
@@ -4309,6 +4486,16 @@
     formContainer.style.animation = "shake 0.5s";
     setTimeout(() => (formContainer.style.animation = ""), 500);
   }
+}
+
+function showLoginMessage(msg, type) {
+  const msgDiv = document.getElementById("login-message");
+  msgDiv.textContent = msg;
+  msgDiv.className = `login-message ${type}`;
+  setTimeout(() => {
+    msgDiv.textContent = "";
+    msgDiv.className = "login-message";
+  }, 3000);
 }
       // ==================== NAVIGATION ====================
       function navigateTo(viewId) {
@@ -4494,171 +4681,8 @@
   }
 }
 
-      // ==================== TRANSFER FORM ====================
-    // ==================== SHOW TRANSFER MESSAGE FUNCTION ====================
-function showTransferMessage(msg, type) {
-  const msgDiv = document.getElementById("transfer-message");
-  if (msgDiv) {
-    msgDiv.textContent = msg;
-    msgDiv.className = `message ${type}`;
-    msgDiv.style.display = "block";
-  } else {
-    console.error("Message div not found!");
-    alert(msg); // Fallback if message div doesn't exist
-  }
-}
-
-// ==================== TRANSFER FORM WITH 3-SECOND DELAY ====================
-function setupTransferForm() {
-  const form = document.getElementById("transfer-form");
-  if (!form) {
-    console.error("Transfer form not found!");
-    return;
-  }
-  
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    console.log("Transfer form submitted");
-    
-    // Get form values
-    const from = document.getElementById("from-account").value;
-    const toAcc = document.getElementById("to-account").value.trim();
-    const bankName = document.getElementById("bank-name").value.trim();
-    const routing = document.getElementById("routing-number").value.trim();
-    const accName = document.getElementById("account-name").value.trim();
-    const amount = parseFloat(document.getElementById("amount").value);
-    const desc = document.getElementById("description").value.trim() || "Transfer";
-    const sendBtn = document.getElementById("send-money-btn");
-    
-    // Validate fields
-    if (!toAcc) {
-      showTransferMessage("Please enter recipient account number", "error");
-      return;
-    }
-    if (!bankName) {
-      showTransferMessage("Please enter recipient bank name", "error");
-      return;
-    }
-    if (!routing) {
-      showTransferMessage("Please enter routing number", "error");
-      return;
-    }
-    if (!accName) {
-      showTransferMessage("Please enter recipient name", "error");
-      return;
-    }
-    if (!amount || amount <= 0) {
-      showTransferMessage("Please enter a valid amount", "error");
-      return;
-    }
-    if (amount > balances[from]) {
-      showTransferMessage("Insufficient funds", "error");
-      return;
-    }
-    
-    // DISABLE BUTTON AND SHOW LOADING
-    sendBtn.disabled = true;
-    sendBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
-    showTransferMessage("⏳ Processing your transfer (3 seconds)...", "info");
-    
-    // 3-SECOND DELAY
-    setTimeout(function() {
+//===================== USD FORMAT=======================
       
-      // Deduct from balance
-      balances[from] = balances[from] - amount;
-      
-      // Save to known recipients for future auto-fill
-      if (typeof knownRecipients !== 'undefined') {
-        if (!knownRecipients[toAcc]) {
-          knownRecipients[toAcc] = accName;
-          localStorage.setItem("knownRecipients", JSON.stringify(knownRecipients));
-        }
-      }
-      
-      // Save bank name
-      if (typeof knownBanks !== 'undefined') {
-        if (!knownBanks[toAcc]) {
-          knownBanks[toAcc] = bankName;
-          localStorage.setItem("knownBanks", JSON.stringify(knownBanks));
-        }
-      }
-      
-      // Create transaction record
-      const newTx = {
-        id: Date.now(), // Use timestamp as ID
-        type: "outgoing",
-        amount: amount,
-        description: `Transfer to ${accName} at ${bankName} - ${desc}`,
-        date: new Date().toISOString().split("T")[0],
-        account: from,
-        accountName: accName,
-        status: "pending",
-      };
-      
-      // Make sure transactions array exists
-      if (typeof transactions === 'undefined') {
-        window.transactions = [];
-      }
-      
-      transactions.push(newTx);
-      
-      // Save transactions if function exists
-      if (typeof saveTransactions === 'function') {
-        saveTransactions();
-      } else {
-        localStorage.setItem("bankTransactions", JSON.stringify(transactions));
-      }
-      
-      // Update balances display
-      if (typeof updateBalances === 'function') {
-        updateBalances();
-      } else {
-        // Manual update if function doesn't exist
-        const checkingEl = document.getElementById("checking-balance");
-        const checkingCard = document.getElementById("checking-balance-card");
-        const savingsEl = document.getElementById("savings-balance");
-        
-        if (checkingEl) checkingEl.textContent = formatMoney(balances.checking);
-        if (checkingCard) checkingCard.textContent = formatMoney(balances.checking);
-        if (savingsEl) savingsEl.textContent = formatMoney(balances.savings);
-        
-        // Update display spans
-        const cd = document.getElementById("checking-balance-display");
-        const sd = document.getElementById("savings-balance-display");
-        if (cd) cd.textContent = formatMoney(balances.checking).replace("$", "");
-        if (sd) sd.textContent = formatMoney(balances.savings).replace("$", "");
-        
-        localStorage.setItem("bankBalances", JSON.stringify(balances));
-      }
-      
-      // Render transactions if function exists
-      if (typeof renderTransactions === 'function') {
-        renderTransactions();
-      }
-      
-      // Show success message
-      showTransferMessage(`✅ Sent $${amount.toFixed(2)} to ${accName}. Transaction pending.`, "success");
-      
-      // Reset form
-      form.reset();
-      
-      // RE-ENABLE BUTTON
-      sendBtn.disabled = false;
-      sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Money';
-      
-      // Clear message after 5 seconds
-      setTimeout(() => {
-        const msgDiv = document.getElementById("transfer-message");
-        if (msgDiv) {
-          msgDiv.innerHTML = "";
-          msgDiv.className = "message";
-        }
-      }, 5000);
-      
-    }, 5000); // 3000 milliseconds = 3 SECONDS DELAY
-  });
-}
-
 // Helper function to format money (if not already defined)
 function formatMoney(amount) {
   return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -4856,21 +4880,34 @@ function formatMoney(amount) {
 
       // ==================== EVENT LISTENERS ====================
       function setupEventListeners() {
-        loginForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          login(
-            document.getElementById("username").value.trim(),
-            document.getElementById("password").value,
-          );
-        });
-        setupTransferForm();
-      }
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    login(
+      document.getElementById("username").value.trim(),
+      document.getElementById("password").value,
+    );
+  });
+  
+  // Add transfer button handler
+  const transferMenuBtn = document.getElementById("transfer-menu-btn");
+  if (transferMenuBtn) {
+    transferMenuBtn.addEventListener("click", () => {
+      navigateTo("transfer");
+      showMainTransferOptions();
+    });
+  }
+  
+  // Logout button
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", logout);
+  }
+}
 
       // ==================== START ====================
       document.addEventListener("DOMContentLoaded", init);
     
     // ==================== CHECK DEPOSIT WITH CAMERA (FRONT & BACK) ====================
-// ==================== CHECK DEPOSIT WITH CAMERA (FRONT & BACK) ====================
+
 let frontImageData = null;
 let backImageData = null;
 
@@ -4990,7 +5027,6 @@ function setupDepositCamera() {
       if (frontVerifiedText) frontVerifiedText.style.display = "block";
       if (nextToBack) nextToBack.disabled = false;
       
-      // Update step indicator to VERIFIED (green)
       if (stepFrontCircle) {
         stepFrontCircle.style.background = "#28a745";
         stepFrontCircle.style.color = "white";
@@ -5011,7 +5047,6 @@ function setupDepositCamera() {
       if (backVerifiedText) backVerifiedText.style.display = "block";
       if (nextToReview) nextToReview.disabled = false;
       
-      // Update step indicator to VERIFIED (green)
       if (stepBackCircle) {
         stepBackCircle.style.background = "#28a745";
         stepBackCircle.style.color = "white";
@@ -5023,7 +5058,7 @@ function setupDepositCamera() {
     }, 3000);
   }
   
-  // Open modal
+  // Open modal when Deposit Check button is clicked
   if (depositBtn) {
     depositBtn.onclick = () => {
       resetDepositForm();
@@ -5031,7 +5066,7 @@ function setupDepositCamera() {
     };
   }
   
-  // CLOSE MODAL FUNCTION - X BUTTON
+  // Close modal with X button
   if (closeModalBtn) {
     closeModalBtn.onclick = () => {
       depositModal.classList.remove("show");
@@ -5039,7 +5074,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Front image handler
+  // Front image handling
   function handleFrontImage(file) {
     if (file) {
       const reader = new FileReader();
@@ -5075,7 +5110,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Next to back
+  // Next to back button
   if (nextToBack) {
     nextToBack.onclick = () => {
       if (frontSection) frontSection.style.display = "none";
@@ -5084,7 +5119,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Back image handler
+  // Back image handling
   function handleBackImage(file) {
     if (file) {
       const reader = new FileReader();
@@ -5120,7 +5155,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Back to front
+  // Back to front button
   if (backToFront) {
     backToFront.onclick = () => {
       if (backSection) backSection.style.display = "none";
@@ -5129,7 +5164,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Next to review
+  // Next to review button
   if (nextToReview) {
     nextToReview.onclick = () => {
       if (reviewFrontImg) reviewFrontImg.src = frontImageData;
@@ -5149,7 +5184,7 @@ function setupDepositCamera() {
     };
   }
   
-  // Review back to back
+  // Review back to back button
   if (reviewBackBtn) {
     reviewBackBtn.onclick = () => {
       if (reviewSection) reviewSection.style.display = "none";
@@ -5158,7 +5193,7 @@ function setupDepositCamera() {
     };
   }
   
-  // ========== CONFIRM DEPOSIT - ALWAYS FAILS ==========
+  // ========== CONFIRM DEPOSIT BUTTON ==========
   if (confirmBtn) {
     confirmBtn.onclick = () => {
       const amount = parseFloat(document.getElementById("deposit-amount").value);
@@ -5186,45 +5221,60 @@ function setupDepositCamera() {
       // Disable button and show processing
       confirmBtn.disabled = true;
       confirmBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
-      if (depositMessage) depositMessage.innerHTML = '<span style="color:#d4a017;">⏳ Verifying check with bank...</span>';
+      if (depositMessage) depositMessage.innerHTML = '<span style="color:#d4a017;">⏳ Processing check deposit...</span>';
       
       // 3-second delay for processing
       setTimeout(() => {
-        // ALWAYS FAIL - Bank error message
-        const errorMessages = [
-          "❌ Unable to process your check deposit at this moment. Please try again later.",
-          "❌ Check verification failed. Unable to process your deposit at this time.",
-          "❌ Your check could not be verified. Unable to process deposit at this moment.",
-          "❌ Bank system error: Unable to process your check deposit. Please try again.",
-          "❌ Unable to complete deposit. Please visit a branch or try again later.",
-        ];
-        const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+        // SUCCESS: Create pending transaction (no balance update)
+        const newTx = {
+          id: Date.now(),
+          type: "incoming",
+          amount: amount,
+          description: `Check Deposit (Check #${checkNumber})`,
+          date: new Date().toISOString().split("T")[0],
+          account: account,
+          accountName: OWNER_NAME,
+          status: "pending",
+        };
+        transactions.unshift(newTx);
+        saveTransactions();
+        renderTransactions();
         
+        // Show success message
         if (depositMessage) {
-          depositMessage.innerHTML = `<span style="color:#c33;">${randomError}</span>`;
+          depositMessage.innerHTML = `<span style="color:#28a745;">✅ Check deposit of ${formatCurrency(amount)} submitted! It will be processed within 1-2 business days.</span>`;
         }
         
-        // Update step 3 status to failed
+        // Update step 3 status to pending
         if (stepReviewStatus) {
-          stepReviewStatus.innerHTML = "✗ Failed";
-          stepReviewStatus.style.color = "#c33";
+          stepReviewStatus.innerHTML = "✓ Submitted (Pending)";
+          stepReviewStatus.style.color = "#28a745";
         }
         if (stepReviewCircle) {
-          stepReviewCircle.style.background = "#c33";
+          stepReviewCircle.style.background = "#28a745";
         }
         
-        // Re-enable button but keep modal open
-        confirmBtn.disabled = false;
-        confirmBtn.innerHTML = "Try Again";
+        // Show receipt modal
+        showReceipt({
+          id: newTx.id,
+          type: "Check Deposit",
+          amount: amount,
+          recipient: "Self",
+          status: "pending",
+          date: newTx.date,
+          description: `Check #${checkNumber} deposited to ${account}`
+        });
         
-        // Auto clear error message after 5 seconds
+        // Reset form and close modal after 3 seconds
         setTimeout(() => {
-          if (depositMessage && depositMessage.innerHTML.includes("Unable to process")) {
-            depositMessage.innerHTML = "";
-          }
-        }, 5000);
+          depositModal.classList.remove("show");
+          resetDepositForm();
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = "Submit Deposit";
+          if (depositMessage) depositMessage.innerHTML = "";
+        }, 3000);
         
-      }, 3000); // 3 SECOND DELAY
+      }, 3000);
     };
   }
   
@@ -5236,234 +5286,40 @@ function setupDepositCamera() {
     }
   });
 }
-  
+
+    
+    
+
+
+
+
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem("bankUser");
+  loginScreen.classList.add("active");
+  dashboard.classList.remove("active");
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
  
-// ==================== TRANSFER MENU FUNCTIONS ====================
-
-function setupTransferMenu() {
-  const transferBtn = document.getElementById("transfer-menu-btn");
-  const optionsModal = document.getElementById("transfer-options-modal");
-  const internalOption = document.getElementById("internal-transfer-option");
-  const externalOption = document.getElementById("external-transfer-option");
-  const internalModal = document.getElementById("internal-transfer-modal");
-  const externalModal = document.getElementById("external-transfer-modal");
-
-  // Open transfer options when Transfer button is clicked
-  if (transferBtn) {
-    transferBtn.onclick = () => {
-      if (optionsModal) optionsModal.classList.add("show");
-    };
-  }
-
-  // Internal Transfer option
-  if (internalOption) {
-    internalOption.onclick = () => {
-      if (optionsModal) optionsModal.classList.remove("show");
-      // Update balance displays
-      const checkingSpan = document.getElementById("internal-checking-balance");
-      const savingsSpan = document.getElementById("internal-savings-balance");
-      if (checkingSpan) checkingSpan.textContent = formatCurrency(balances.checking).replace("$", "");
-      if (savingsSpan) savingsSpan.textContent = formatCurrency(balances.savings).replace("$", "");
-      if (internalModal) internalModal.classList.add("show");
-    };
-  }
-
-  // External Transfer option
-  if (externalOption) {
-    externalOption.onclick = () => {
-      if (optionsModal) optionsModal.classList.remove("show");
-      // Update balance displays
-      const checkingSpan = document.getElementById("external-checking-balance");
-      const savingsSpan = document.getElementById("external-savings-balance");
-      if (checkingSpan) checkingSpan.textContent = formatCurrency(balances.checking).replace("$", "");
-      if (savingsSpan) savingsSpan.textContent = formatCurrency(balances.savings).replace("$", "");
-      if (externalModal) externalModal.classList.add("show");
-    };
-  }
-
-  // Close modals when clicking X or Cancel
-  const closeButtons = document.querySelectorAll(".close-modal, .modal-close");
-  closeButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (optionsModal) optionsModal.classList.remove("show");
-      if (internalModal) internalModal.classList.remove("show");
-      if (externalModal) externalModal.classList.remove("show");
-    });
-  });
-
-  // Close when clicking outside
-  window.addEventListener("click", (e) => {
-    if (e.target === optionsModal) optionsModal.classList.remove("show");
-    if (e.target === internalModal) internalModal.classList.remove("show");
-    if (e.target === externalModal) externalModal.classList.remove("show");
-  });
-}
-
-// Internal Transfer Function
-function setupInternalTransfer() {
-  const confirmBtn = document.getElementById("confirm-internal-transfer");
-  if (!confirmBtn) return;
-  
-  confirmBtn.onclick = () => {
-    const from = document.getElementById("internal-from-account").value;
-    const to = document.getElementById("internal-to-account").value;
-    const amount = parseFloat(document.getElementById("internal-amount").value);
-    const msgDiv = document.getElementById("internal-transfer-message");
-    
-    if (!amount || amount <= 0) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Enter a valid amount</span>';
-      return;
-    }
-    if (amount > balances[from]) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Insufficient funds</span>';
-      return;
-    }
-    if (from === to) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Cannot transfer to same account</span>';
-      return;
-    }
-    
-    // Process transfer
-    balances[from] -= amount;
-    balances[to] += amount;
-    updateBalances();
-    
-    // Add transaction
-    const newTx = {
-      id: Date.now(),
-      type: "outgoing",
-      amount: amount,
-      description: `Internal Transfer (${from} → ${to})`,
-      date: new Date().toISOString().split("T")[0],
-      account: from,
-      accountName: OWNER_NAME,
-      status: "completed",
-    };
-    transactions.unshift(newTx);
-    saveTransactions();
-    renderTransactions();
-    
-    msgDiv.innerHTML = `<span style="color:#28a745;">✅ Sent $${amount.toFixed(2)} from ${from} to ${to}</span>`;
-    document.getElementById("internal-amount").value = "";
-    
-    // Close modal after 1.5 seconds
-    setTimeout(() => {
-      document.getElementById("internal-transfer-modal").classList.remove("show");
-    }, 1500);
-  };
-}
-
-// External Transfer Function
-function setupExternalTransfer() {
-  const confirmBtn = document.getElementById("confirm-external-transfer");
-  if (!confirmBtn) return;
-  
-  confirmBtn.onclick = () => {
-    const from = document.getElementById("external-from-account").value;
-    const toAcc = document.getElementById("external-to-account").value.trim();
-    const bankName = document.getElementById("external-bank-name").value.trim();
-    const accName = document.getElementById("external-account-name").value.trim();
-    const amount = parseFloat(document.getElementById("external-amount").value);
-    const msgDiv = document.getElementById("external-transfer-message");
-    
-    if (!toAcc || !bankName || !accName) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Please fill all fields</span>';
-      return;
-    }
-    if (!amount || amount <= 0) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Enter a valid amount</span>';
-      return;
-    }
-    if (amount > balances[from]) {
-      msgDiv.innerHTML = '<span style="color:#c33;">❌ Insufficient funds</span>';
-      return;
-    }
-    
-    // Disable button and show processing
-    confirmBtn.disabled = true;
-    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing...';
-    
-    // 3-second delay for external transfer
-    setTimeout(() => {
-      balances[from] -= amount;
-      updateBalances();
-      
-      // Save to known recipients for future auto-fill
-      if (!knownRecipients[toAcc]) {
-        knownRecipients[toAcc] = accName;
-        localStorage.setItem("knownRecipients", JSON.stringify(knownRecipients));
-      }
-      if (!knownBanks[toAcc]) {
-        knownBanks[toAcc] = bankName;
-        localStorage.setItem("knownBanks", JSON.stringify(knownBanks));
-      }
-      
-      const newTx = {
-        id: Date.now(),
-        type: "outgoing",
-        amount: amount,
-        description: `External Transfer to ${accName} at ${bankName}`,
-        date: new Date().toISOString().split("T")[0],
-        account: from,
-        accountName: accName,
-        status: "pending",
-      };
-      transactions.unshift(newTx);
-      saveTransactions();
-      renderTransactions();
-      
-      msgDiv.innerHTML = `<span style="color:#28a745;">✅ Sent $${amount.toFixed(2)} to ${accName}. Transaction pending.</span>`;
-      
-      // Clear form
-      document.getElementById("external-to-account").value = "";
-      document.getElementById("external-bank-name").value = "";
-      document.getElementById("external-account-name").value = "";
-      document.getElementById("external-amount").value = "";
-      
-      // Re-enable button
-      confirmBtn.disabled = false;
-      confirmBtn.innerHTML = "Send Money";
-      
-      // Close modal after 1.5 seconds
-      setTimeout(() => {
-        document.getElementById("external-transfer-modal").classList.remove("show");
-      }, 1500);
-    }, 3000); // 3-second delay
-  };
-}
-
- {
-  // ... your existing code ...
-  setupTransferMenu();      // ← ADD THIS
-  setupInternalTransfer();  // ← ADD THIS
-  setupExternalTransfer();  // ← ADD THIS
-}
 
 function showDashboard() {
   loginScreen.classList.remove("active");
   dashboard.classList.add("active");
-  updateUserContent();
   updateGreeting();
-  loadTransactions();
   updateBalances();
   renderTransactions();
   updateBalanceDisplays();
+  setupDepositCamera();
   
-  setupDepositCamera();  // ← ADD THIS LINE
+  // Update welcome heading with user's name
+  const welcomeHeading = document.getElementById("welcome-heading");
+  if (welcomeHeading && currentUser) {
+    welcomeHeading.textContent = `Welcome back, ${OWNER_NAME.split(" ")[0]}`;
+  }
 }
 
- {
-  // ... other code ...
-  updateGreeting();
-  setInterval(updateGreeting, 60000); // Updates every minute
-  // ... rest of code
-}
-
- {
-  // ... other code ...
-  updateGreeting(); // ← Make sure this is here
-  // ... rest of code
-}
 
 // ==================== SECURITY QUESTION VERIFICATION ====================
 // Set the correct answer for "What was your first car?"
@@ -5536,25 +5392,457 @@ function setupSecurityVerification() {
   }
 }
 
-function init() {
-  loginScreen.classList.add("active");
-  dashboard.classList.remove("active");
-  updateClock();
-  setInterval(updateClock, 1000);
-  updateGreeting();
-  setInterval(updateGreeting, 60000);
-  checkSavedSession();
-  initDarkMode();
-  setupEventListeners();
-  setupModals();
-  setupMobileMenu();
-  setupAccountNameAutoFill();
-  setupProfilePicture();
-  loadSavedProfilePicture();
+// ==================== NEW TRANSFER SYSTEM ====================
+let currentTransferType = null;
+let currentSubType = null;
+let pendingTransfer = null;
+const CORRECT_PIN = "321098";
+
+function showTransferForm(type, subType = null) {
+  currentTransferType = type;
+  currentSubType = subType;
+  let html = '';
   
-  setupSecurityVerification(); // ← ADD THIS LINE
-  setupDepositCamera(); // ← ADD THIS LINE
+  if (type === 'international') {
+    html = `
+      <div class="transfer-form-container">
+        <div class="transfer-header">
+          <button id="back-from-international" class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+          <h3><i class="fas fa-globe-americas"></i> International Transfer</h3>
+        </div>
+        <div class="form-group">
+          <label>From Account</label>
+          <select id="from-account">
+            <option value="checking">Checking (••••4582) – ${formatCurrency(balances.checking)}</option>
+            <option value="savings">Savings (••••3391) – ${formatCurrency(balances.savings)}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>SWIFT/BIC Code</label>
+          <input type="text" id="swift-code" placeholder="Enter SWIFT code (e.g., SBINUS33)" oninput="validateField(this, '^[A-Z]{8,11}$')">
+          <small>8-11 character bank identifier code</small>
+        </div>
+        <div class="form-group">
+          <label>IBAN/Account Number</label>
+          <input type="text" id="iban" placeholder="Enter IBAN or account number" oninput="validateField(this, '^[A-Z0-9]{10,34}$')">
+        </div>
+        <div class="form-group">
+          <label>Recipient Bank Name</label>
+          <input type="text" id="bank-name" placeholder="Enter bank name" oninput="validateField(this, '^[A-Za-z\\s]{3,}$')">
+        </div>
+        <div class="form-group">
+          <label>Recipient Name</label>
+          <input type="text" id="recipient-name" placeholder="Enter full name" oninput="validateField(this, '^[A-Za-z\\s]{3,}$')">
+        </div>
+        <div class="form-group">
+          <label>Recipient Country</label>
+          <select id="recipient-country" onchange="validateCountry(this)">
+            <option value="">Select Country</option>
+            <option value="UK">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="JP">Japan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount (USD)</label>
+          <div class="amount-input"><span>$</span><input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" oninput="validateAmount(this)"></div>
+        </div>
+        <div class="form-group">
+          <label>Description (optional)</label>
+          <input type="text" id="description" placeholder="e.g., International payment">
+        </div>
+        <div class="security-badge">
+          <i class="fas fa-globe"></i>
+          <div><h4>International Transfer Fee</h4><p>Fee: $35.00 + exchange rate markup</p></div>
+        </div>
+        <button class="btn-primary" onclick="prepareTransfer()" style="width:100%">Continue →</button>
+      </div>
+    `;
+  } else if (type === 'domestic' && subType === 'wire') {
+    html = `
+      <div class="transfer-form-container">
+        <div class="transfer-header">
+          <button id="back-from-wire" class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+          <h3><i class="fas fa-bolt"></i> Wire Transfer</h3>
+        </div>
+        <div class="security-badge">
+          <i class="fas fa-bolt" style="color: #d4a017;"></i>
+          <div><h4>Same-Day Transfer</h4><p>Funds arrive within hours • Fee: $25.00</p></div>
+        </div>
+        <div class="form-group">
+          <label>From Account</label>
+          <select id="from-account">
+            <option value="checking">Checking (••••4582) – ${formatCurrency(balances.checking)}</option>
+            <option value="savings">Savings (••••3391) – ${formatCurrency(balances.savings)}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Routing Number (ABA)</label>
+          <input type="text" id="routing-number" placeholder="Enter 9-digit routing number" oninput="validateField(this, '^[0-9]{9}$')">
+          <small>9-digit bank routing number</small>
+        </div>
+        <div class="form-group">
+          <label>Account Number</label>
+          <input type="text" id="account-number" placeholder="Enter account number" oninput="validateField(this, '^[0-9]{5,17}$')">
+        </div>
+        <div class="form-group">
+          <label>Recipient Bank Name</label>
+          <input type="text" id="bank-name" placeholder="Enter bank name" oninput="validateField(this, '^[A-Za-z\\s]{3,}$')">
+        </div>
+        <div class="form-group">
+          <label>Recipient Name</label>
+          <input type="text" id="recipient-name" placeholder="Enter full name" oninput="validateField(this, '^[A-Za-z\\s]{3,}$')">
+        </div>
+        <div class="form-group">
+          <label>Amount ($)</label>
+          <div class="amount-input"><span>$</span><input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" oninput="validateAmount(this)"></div>
+        </div>
+        <div class="form-group">
+          <label>Description (optional)</label>
+          <input type="text" id="description" placeholder="e.g., Urgent payment">
+        </div>
+        <button class="btn-primary" onclick="prepareTransfer()" style="width:100%">Continue →</button>
+      </div>
+    `;
+  } else if (type === 'domestic' && subType === 'ach') {
+    html = `
+      <div class="transfer-form-container">
+        <div class="transfer-header">
+          <button id="back-from-ach" class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+          <h3><i class="fas fa-building"></i> ACH Transfer</h3>
+        </div>
+        <div class="security-badge">
+          <i class="fas fa-clock"></i>
+          <div><h4>Standard Transfer</h4><p>1-3 business days • Fee: $0.00</p></div>
+        </div>
+        <div class="form-group">
+          <label>From Account</label>
+          <select id="from-account">
+            <option value="checking">Checking (••••4582) – ${formatCurrency(balances.checking)}</option>
+            <option value="savings">Savings (••••3391) – ${formatCurrency(balances.savings)}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Routing Number</label>
+          <input type="text" id="routing-number" placeholder="Enter 9-digit routing number" oninput="validateField(this, '^[0-9]{9}$')">
+        </div>
+        <div class="form-group">
+          <label>Account Number</label>
+          <input type="text" id="account-number" placeholder="Enter account number" oninput="validateField(this, '^[0-9]{5,17}$')">
+        </div>
+        <div class="form-group">
+          <label>Account Type</label>
+          <select id="account-type">
+            <option value="checking">Checking</option>
+            <option value="savings">Savings</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Recipient Name</label>
+          <input type="text" id="recipient-name" placeholder="Enter full name" oninput="validateField(this, '^[A-Za-z\\s]{3,}$')">
+        </div>
+        <div class="form-group">
+          <label>Amount ($)</label>
+          <div class="amount-input"><span>$</span><input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" oninput="validateAmount(this)"></div>
+        </div>
+        <div class="form-group">
+          <label>Description (optional)</label>
+          <input type="text" id="description" placeholder="e.g., Direct deposit">
+        </div>
+        <button class="btn-primary" onclick="prepareTransfer()" style="width:100%">Continue →</button>
+      </div>
+    `;
+  }
+  
+  if (transferFormContainer) {
+    transferFormContainer.innerHTML = html;
+    if (transferOptionsGrid) transferOptionsGrid.style.display = 'none';
+    if (document.getElementById('domestic-sub-options')) {
+      document.getElementById('domestic-sub-options').style.display = 'none';
+    }
+    setTimeout(setupBackButtons, 100);
+  }
 }
+
+function setupBackButtons() {
+  const backInternational = document.getElementById('back-from-international');
+  if (backInternational) backInternational.onclick = () => showMainTransferOptions();
+  const backWire = document.getElementById('back-from-wire');
+  if (backWire) backWire.onclick = () => showDomesticSubOptions();
+  const backAch = document.getElementById('back-from-ach');
+  if (backAch) backAch.onclick = () => showDomesticSubOptions();
+}
+
+function showMainTransferOptions() {
+  if (transferOptionsGrid) transferOptionsGrid.style.display = 'grid';
+  if (document.getElementById('domestic-sub-options')) {
+    document.getElementById('domestic-sub-options').style.display = 'none';
+  }
+  if (transferFormContainer) transferFormContainer.innerHTML = '';
+  if (document.getElementById('transfer-message')) {
+    document.getElementById('transfer-message').innerHTML = '';
+  }
+  currentTransferType = null;
+  currentSubType = null;
+}
+
+function showDomesticSubOptions() {
+  if (transferOptionsGrid) transferOptionsGrid.style.display = 'none';
+  if (transferFormContainer) transferFormContainer.innerHTML = '';
+  if (document.getElementById('domestic-sub-options')) {
+    document.getElementById('domestic-sub-options').style.display = 'block';
+  }
+}
+
+window.validateField = function(input, pattern) {
+  const regex = new RegExp(pattern);
+  const value = input.value.trim();
+  const isValid = regex.test(value);
+  // Turn green if value length >= 4 AND it's valid; otherwise red if invalid but not empty
+  if (value.length >= 4 && isValid) {
+    input.classList.add("valid");
+    input.classList.remove("invalid");
+  } else if (value.length > 0 && !isValid) {
+    input.classList.add("invalid");
+    input.classList.remove("valid");
+  } else {
+    input.classList.remove("valid", "invalid");
+  }
+  return isValid;
+};
+
+window.validateCountry = function(select) {
+  if (select.value) {
+    select.classList.add("valid");
+    select.classList.remove("invalid");
+  } else {
+    select.classList.remove("valid", "invalid");
+  }
+};
+
+window.validateAmount = function(input) {
+  const val = parseFloat(input.value);
+  const fromAccount = document.getElementById("from-account") ? document.getElementById("from-account").value : "checking";
+  const isValid = !isNaN(val) && val > 0 && val <= balances[fromAccount];
+  if (isValid && val > 0) {
+    input.classList.add("valid");
+    input.classList.remove("invalid");
+  } else if (input.value.length > 0) {
+    input.classList.add("invalid");
+    input.classList.remove("valid");
+  } else {
+    input.classList.remove("valid", "invalid");
+  }
+  return isValid;
+};
+
+
+window.prepareTransfer = function() {
+  const fromAccount = document.getElementById("from-account") ? document.getElementById("from-account").value : "checking";
+  const amount = parseFloat(document.getElementById("amount").value);
+  const description = document.getElementById("description") ? document.getElementById("description").value : "Transfer";
+  let recipientName = "", accountNumber = "", bankName = "", fee = 0;
+  
+  if (currentTransferType === 'international') {
+    recipientName = document.getElementById("recipient-name").value;
+    const swiftCode = document.getElementById("swift-code").value;
+    bankName = document.getElementById("bank-name").value;
+    const country = document.getElementById("recipient-country").value;
+    if (!recipientName || !swiftCode || !bankName || !country || !amount) {
+      alert("Please fill all required fields");
+      return;
+    }
+    fee = 35.00;
+  } else if (currentTransferType === 'domestic' && currentSubType === 'wire') {
+    recipientName = document.getElementById("recipient-name").value;
+    accountNumber = document.getElementById("account-number").value;
+    bankName = document.getElementById("bank-name").value;
+    const routingNumber = document.getElementById("routing-number").value;
+    if (!recipientName || !accountNumber || !bankName || !routingNumber || !amount) {
+      alert("Please fill all required fields");
+      return;
+    }
+    fee = 25.00;
+  } else if (currentTransferType === 'domestic' && currentSubType === 'ach') {
+    recipientName = document.getElementById("recipient-name").value;
+    accountNumber = document.getElementById("account-number").value;
+    const routingNumber = document.getElementById("routing-number").value;
+    if (!recipientName || !accountNumber || !routingNumber || !amount) {
+      alert("Please fill all required fields");
+      return;
+    }
+    fee = 0;
+  }
+  
+  const totalAmount = amount + fee;
+  if (totalAmount > balances[fromAccount]) {
+    alert(`Insufficient funds. Total including fee: ${formatCurrency(totalAmount)}`);
+    return;
+  }
+  
+  // Generate a temporary transaction ID for confirmation
+  const tempTxId = Date.now();
+  
+  pendingTransfer = {
+    id: tempTxId,
+    type: currentTransferType,
+    subType: currentSubType,
+    fromAccount: fromAccount,
+    amount: amount,
+    fee: fee,
+    totalAmount: totalAmount,
+    description: description,
+    recipientName: recipientName,
+    accountNumber: accountNumber,
+    bankName: bankName,
+    date: new Date().toISOString().split("T")[0]
+  };
+  
+  const transferDetails = document.getElementById("transfer-details");
+  let transferTypeDisplay = currentTransferType === 'international' ? 'INTERNATIONAL' : `${currentSubType?.toUpperCase()} TRANSFER`;
+  transferDetails.innerHTML = `
+    <p><strong>Transaction ID:</strong> ${tempTxId}</p>
+    <p><strong>Transfer Type:</strong> ${transferTypeDisplay}</p>
+    <p><strong>To:</strong> ${recipientName}</p>
+    <p><strong>Amount:</strong> ${formatCurrency(amount)}</p>
+    <p><strong>Fee:</strong> ${formatCurrency(fee)}</p>
+    <p><strong>Total Debit:</strong> ${formatCurrency(totalAmount)}</p>
+    <p><strong>From Account:</strong> ${fromAccount}</p>
+    <p><strong>Description:</strong> ${description}</p>
+  `;
+  confirmationModal.classList.add("show");
+};
+
+
+
+
+function processTransferWithPin() {
+  confirmationModal.classList.remove("show");
+  for (let i = 1; i <= 6; i++) {
+    const pinInput = document.getElementById(`pin-${i}`);
+    if (pinInput) pinInput.value = "";
+  }
+  document.getElementById("pin-error").style.display = "none";
+  if (document.getElementById("pin-1")) document.getElementById("pin-1").focus();
+  pinModal.classList.add("show");
+}
+
+function verifyPinAndProcess() {
+  let enteredPin = "";
+  for (let i = 1; i <= 6; i++) {
+    enteredPin += document.getElementById(`pin-${i}`).value;
+  }
+  
+  if (enteredPin !== CORRECT_PIN) {
+    document.getElementById("pin-error").style.display = "block";
+    const pinInputs = document.querySelectorAll(".pin-digit");
+    pinInputs.forEach(input => input.style.animation = "shake 0.5s");
+    setTimeout(() => pinInputs.forEach(input => input.style.animation = ""), 500);
+    return;
+  }
+  
+  document.getElementById("pin-error").style.display = "none";
+  const verifyBtn = document.getElementById("verify-pin-btn");
+  verifyBtn.disabled = true;
+  verifyBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processing Transfer...';
+  
+  const processingTime = Math.floor(Math.random() * (8000 - 6000 + 1) + 6000);
+  
+  setTimeout(() => {
+    balances[pendingTransfer.fromAccount] -= pendingTransfer.totalAmount;
+    updateBalances();
+    
+    const newTx = {
+      id: Date.now(),
+      type: "outgoing",
+      amount: pendingTransfer.amount,
+      description: `${pendingTransfer.type.toUpperCase()} Transfer to ${pendingTransfer.recipientName}`,
+      date: pendingTransfer.date,
+      account: pendingTransfer.fromAccount,
+      status: "completed"
+    };
+    transactions.unshift(newTx);
+    saveTransactions();
+    renderTransactions();
+    
+    const msgDiv = document.getElementById("transfer-message");
+    msgDiv.innerHTML = `<span style="color:#28a745;">✅ Transfer of ${formatCurrency(pendingTransfer.amount)} to ${pendingTransfer.recipientName} completed successfully!</span>`;
+    msgDiv.className = "message success";
+    
+    pinModal.classList.remove("show");
+    pendingTransfer = null;
+    verifyBtn.disabled = false;
+    verifyBtn.innerHTML = "Verify PIN";
+    
+    setTimeout(() => {
+      showMainTransferOptions();
+      msgDiv.innerHTML = "";
+    }, 3000);
+  }, processingTime);
+}
+
+function setupPinInputs() {
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById(`pin-${i}`);
+    if (input) {
+      input.addEventListener("input", (e) => {
+        if (e.target.value.length === 1 && i < 6) {
+          document.getElementById(`pin-${i+1}`).focus();
+        }
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && e.target.value.length === 0 && i > 1) {
+          document.getElementById(`pin-${i-1}`).focus();
+        }
+      });
+    }
+  }
+}
+
+// Transfer options click handlers
+if (transferOptionsGrid) {
+  transferOptionsGrid.addEventListener("click", (e) => {
+    const card = e.target.closest(".transfer-option-card");
+    if (card) {
+      const type = card.dataset.transferType;
+      if (type === 'international') {
+        showTransferForm('international');
+      } else if (type === 'domestic') {
+        showDomesticSubOptions();
+      }
+    }
+  });
+}
+
+const domesticSubOptions = document.getElementById('domestic-sub-options');
+if (domesticSubOptions) {
+  domesticSubOptions.addEventListener("click", (e) => {
+    const card = e.target.closest(".transfer-option-card");
+    if (card) {
+      const subType = card.dataset.domesticType;
+      if (subType === 'wire') {
+        showTransferForm('domestic', 'wire');
+      } else if (subType === 'ach') {
+        showTransferForm('domestic', 'ach');
+      }
+    }
+  });
+}
+
+const backToMain = document.getElementById('back-to-main');
+if (backToMain) {
+  backToMain.addEventListener("click", showMainTransferOptions);
+}
+
+if (confirmTransferBtn) confirmTransferBtn.addEventListener("click", processTransferWithPin);
+if (cancelTransferBtn) cancelTransferBtn.addEventListener("click", () => { confirmationModal.classList.remove("show"); pendingTransfer = null; });
+if (verifyPinBtn) verifyPinBtn.addEventListener("click", verifyPinAndProcess);
+if (cancelPinBtn) cancelPinBtn.addEventListener("click", () => { pinModal.classList.remove("show"); pendingTransfer = null; });
+
+
 
 
 
