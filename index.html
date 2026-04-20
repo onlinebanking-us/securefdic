@@ -2103,6 +2103,282 @@ body.dark-mode .transfer-sub-header { background: #2a2f3f; }
   color: #999;
   margin-top: 0.25rem;
 }
+/* ===== SIGNUP FORM STYLES ===== */
+.signup-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f5f7fa;
+  border-radius: 1rem;
+}
+
+.signup-step {
+  text-align: center;
+  flex: 1;
+}
+
+.signup-step-number {
+  width: 35px;
+  height: 35px;
+  background: #ccc;
+  color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.signup-step.active .signup-step-number {
+  background: #d4a017;
+}
+
+.signup-step.completed .signup-step-number {
+  background: #28a745;
+}
+
+.signup-step-label {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.signup-step.active .signup-step-label {
+  color: #d4a017;
+  font-weight: 600;
+}
+
+.signup-page {
+  display: none;
+}
+
+.signup-page.active {
+  display: block;
+}
+
+.signup-section {
+  background: #f9f9f9;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.signup-section h3 {
+  color: #966f33;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #d4a017;
+  padding-bottom: 0.5rem;
+}
+
+.signup-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.signup-group {
+  margin-bottom: 1rem;
+}
+
+.signup-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.signup-group input,
+.signup-group select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.signup-group input:focus,
+.signup-group select:focus {
+  border-color: #d4a017;
+  outline: none;
+}
+
+.signup-group input.valid,
+.signup-group select.valid {
+  border-color: #28a745;
+  background-color: #e8f5e8;
+}
+
+.signup-group input.invalid {
+  border-color: #dc3545;
+  background-color: #fee7e7;
+}
+
+.required::after {
+  content: " *";
+  color: #dc3545;
+}
+
+.signup-id-upload {
+  border: 2px dashed #ccc;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.signup-id-upload:hover {
+  border-color: #d4a017;
+  background: rgba(212, 160, 23, 0.05);
+}
+
+.signup-id-upload i {
+  font-size: 2rem;
+  color: #d4a017;
+}
+
+.signup-id-preview {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.signup-id-preview-item {
+  position: relative;
+  width: 100px;
+}
+
+.signup-id-preview-item img {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 2px solid #28a745;
+}
+
+.signup-id-preview-item .remove-id {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.signup-verifying {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff3cd;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.signup-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.signup-btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.signup-btn-primary {
+  background: linear-gradient(135deg, #d4a017, #966f33);
+  color: white;
+}
+
+.signup-btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.signup-checkbox {
+  margin: 0.75rem 0;
+}
+
+.signup-checkbox label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.signup-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 1.5rem;
+}
+
+.signup-loading.active {
+  display: flex;
+}
+
+.signup-loading-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  max-width: 350px;
+}
+
+.signup-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #d4a017;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+body.dark-mode .signup-section {
+  background: #2a2f3f;
+}
+
+body.dark-mode .signup-progress-steps {
+  background: #1e2333;
+}
+
+body.dark-mode .signup-group input,
+body.dark-mode .signup-group select {
+  background: #1e2333;
+  border-color: #3a3f4f;
+  color: #e0e0e0;
+}
 
 
 </style>
@@ -3590,25 +3866,295 @@ body.dark-mode .transfer-sub-header { background: #2a2f3f; }
       </div>
     </div>
 
-    <!-- Sign Up Modal -->
-    <div id="signup-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h3>Open an Account</h3>
-        <p>
-          Visit a branch or call <strong>1-800-SECUREBK</strong> or email
-          Mabel at
-          <strong
-            ><a
-              href="mailto:support@securebank.com"
-              class="email-link"
-              >support@securebank.com</a
-            ></strong
-          >
-        </p>
-        <button class="btn modal-close">Close</button>
+    <!-- Sign Up Modal - Full Registration Form -->
+<div id="signup-modal" class="modal">
+  <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+    <span class="close-modal" id="close-signup-modal">&times;</span>
+    
+    <!-- Progress Steps -->
+    <div class="signup-progress-steps">
+      <div class="signup-step active" id="signup-step1">
+        <div class="signup-step-number">1</div>
+        <div class="signup-step-label">Personal Info</div>
+      </div>
+      <div class="signup-step" id="signup-step2">
+        <div class="signup-step-number">2</div>
+        <div class="signup-step-label">Financial & Credentials</div>
+      </div>
+      <div class="signup-step" id="signup-step3">
+        <div class="signup-step-number">3</div>
+        <div class="signup-step-label">Review & Submit</div>
       </div>
     </div>
+
+    <!-- PAGE 1 - Personal Information -->
+    <div id="signup-page1" class="signup-page active">
+      <div class="signup-section">
+        <h3><i class="fas fa-user"></i> Personal Details</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Title</label>
+            <select id="signup-title">
+              <option value="">Select Title</option>
+              <option value="Mr">Mr.</option>
+              <option value="Mrs">Mrs.</option>
+              <option value="Ms">Ms.</option>
+              <option value="Dr">Dr.</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label class="required">First Name</label>
+            <input type="text" id="signup-first-name" placeholder="Enter first name">
+          </div>
+          <div class="signup-group">
+            <label>Middle Name</label>
+            <input type="text" id="signup-middle-name" placeholder="Enter middle name">
+          </div>
+          <div class="signup-group">
+            <label class="required">Last Name</label>
+            <input type="text" id="signup-last-name" placeholder="Enter last name">
+          </div>
+        </div>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Gender</label>
+            <select id="signup-gender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-binary">Non-binary</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label class="required">Date of Birth</label>
+            <input type="date" id="signup-dob">
+          </div>
+          <div class="signup-group">
+            <label class="required">SSN / ITIN</label>
+            <input type="text" id="signup-ssn" placeholder="XXX-XX-XXXX">
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-phone-alt"></i> Contact Information</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Phone Number</label>
+            <input type="tel" id="signup-phone" placeholder="(555) 555-5555">
+          </div>
+          <div class="signup-group">
+            <label class="required">Email Address</label>
+            <input type="email" id="signup-email" placeholder="you@example.com">
+          </div>
+          <div class="signup-group">
+            <label class="required">Confirm Email</label>
+            <input type="email" id="signup-email-confirm" placeholder="Confirm email">
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-home"></i> Address</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Street Address</label>
+            <input type="text" id="signup-address" placeholder="Street address">
+          </div>
+          <div class="signup-group">
+            <label class="required">City</label>
+            <input type="text" id="signup-city">
+          </div>
+          <div class="signup-group">
+            <label class="required">State</label>
+            <input type="text" id="signup-state">
+          </div>
+          <div class="signup-group">
+            <label class="required">ZIP Code</label>
+            <input type="text" id="signup-zip">
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-id-card"></i> Identification</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">ID Type</label>
+            <select id="signup-id-type">
+              <option value="">Select ID Type</option>
+              <option value="drivers">Driver's License</option>
+              <option value="passport">Passport</option>
+              <option value="national">National ID</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label class="required">ID Number</label>
+            <input type="text" id="signup-id-number">
+          </div>
+        </div>
+        <div class="signup-group">
+          <label class="required">Upload ID (Front & Back)</label>
+          <div class="signup-id-upload" id="signup-front-upload">
+            <i class="fas fa-camera"></i>
+            <p>Click to upload FRONT of ID</p>
+            <input type="file" id="signup-front-id" accept="image/*" style="display:none">
+          </div>
+          <div class="signup-id-upload" id="signup-back-upload">
+            <i class="fas fa-camera"></i>
+            <p>Click to upload BACK of ID</p>
+            <input type="file" id="signup-back-id" accept="image/*" style="display:none">
+          </div>
+          <div class="signup-id-preview" id="signup-id-preview"></div>
+          <div id="signup-id-status" style="display:none" class="signup-verifying">
+            <i class="fas fa-spinner fa-pulse"></i> Verifying ID (6 seconds)...
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-navigation">
+        <button class="signup-btn signup-btn-primary" id="signup-next1">Next: Financial Info →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 2 - Financial & Credentials -->
+    <div id="signup-page2" class="signup-page">
+      <div class="signup-section">
+        <h3><i class="fas fa-briefcase"></i> Employment & Income</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Employment Status</label>
+            <select id="signup-employment">
+              <option value="">Select Status</option>
+              <option value="full-time">Full-time</option>
+              <option value="part-time">Part-time</option>
+              <option value="self-employed">Self-employed</option>
+              <option value="retired">Retired</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label class="required">Annual Income</label>
+            <select id="signup-income">
+              <option value="">Select Range</option>
+              <option value="0-25000">$0 - $25,000</option>
+              <option value="25000-50000">$25,000 - $50,000</option>
+              <option value="50000-100000">$50,000 - $100,000</option>
+              <option value="100000+">$100,000+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-credit-card"></i> Account Preferences</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Account Type</label>
+            <select id="signup-account-type">
+              <option value="">Select Account Type</option>
+              <option value="checking">Checking</option>
+              <option value="savings">Savings</option>
+              <option value="both">Both Checking & Savings</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label>Debit Card?</label>
+            <select id="signup-debit-card">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-lock"></i> Login Credentials</h3>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Username</label>
+            <input type="text" id="signup-username" placeholder="Choose username">
+          </div>
+          <div class="signup-group">
+            <label class="required">Password</label>
+            <input type="password" id="signup-password" placeholder="Create password">
+            <small>8+ chars, uppercase, lowercase, number, special</small>
+          </div>
+          <div class="signup-group">
+            <label class="required">Confirm Password</label>
+            <input type="password" id="signup-password-confirm" placeholder="Confirm password">
+          </div>
+        </div>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Transaction PIN (6 digits)</label>
+            <input type="password" id="signup-pin" maxlength="6" placeholder="6-digit PIN">
+          </div>
+          <div class="signup-group">
+            <label class="required">Confirm PIN</label>
+            <input type="password" id="signup-pin-confirm" maxlength="6" placeholder="Confirm PIN">
+          </div>
+        </div>
+        <div class="signup-row">
+          <div class="signup-group">
+            <label class="required">Security Question</label>
+            <select id="signup-security-q">
+              <option value="">Select a question</option>
+              <option value="What was your first car?">What was your first car?</option>
+              <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+              <option value="What city were you born in?">What city were you born in?</option>
+            </select>
+          </div>
+          <div class="signup-group">
+            <label class="required">Your Answer</label>
+            <input type="text" id="signup-security-a" placeholder="Your answer">
+          </div>
+        </div>
+      </div>
+
+      <div class="signup-section">
+        <h3><i class="fas fa-check-square"></i> Agreements</h3>
+        <div class="signup-checkbox">
+          <label><input type="checkbox" id="signup-consent1"> I agree to the Deposit Account Agreement</label>
+        </div>
+        <div class="signup-checkbox">
+          <label><input type="checkbox" id="signup-consent2"> I agree to receive electronic statements</label>
+        </div>
+        <div class="signup-checkbox">
+          <label><input type="checkbox" id="signup-consent3"> I confirm the information is true and correct</label>
+        </div>
+      </div>
+
+      <div class="signup-navigation">
+        <button class="signup-btn signup-btn-secondary" id="signup-back1">← Previous</button>
+        <button class="signup-btn signup-btn-primary" id="signup-next2">Next: Review →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 3 - Review & Submit -->
+    <div id="signup-page3" class="signup-page">
+      <div class="signup-section">
+        <h3><i class="fas fa-clipboard-list"></i> Review Your Information</h3>
+        <div id="signup-review-content" style="max-height: 300px; overflow-y: auto;"></div>
+      </div>
+      <div class="signup-navigation">
+        <button class="signup-btn signup-btn-secondary" id="signup-back2">← Previous</button>
+        <button class="signup-btn signup-btn-primary" id="signup-submit">Submit Application →</button>
+      </div>
+    </div>
+
+    <!-- Loading Overlay inside modal -->
+    <div id="signup-loading" class="signup-loading">
+      <div class="signup-loading-content">
+        <div class="signup-spinner"></div>
+        <h3>Creating Your Account</h3>
+        <p id="signup-loading-msg">Please wait...</p>
+        <p style="color:#856404; font-size:0.85rem; margin-top:1rem;">
+          <i class="fas fa-exclamation-triangle"></i> Do not close this page
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- Service Details Modal -->
     <div id="service-modal" class="modal">
@@ -5844,7 +6390,264 @@ if (cancelPinBtn) cancelPinBtn.addEventListener("click", () => { pinModal.classL
 
 
 
+// ==================== SIGNUP FORM FUNCTIONALITY ====================
+let signupFrontData = null;
+let signupBackData = null;
+let signupIdVerified = false;
 
+// Page navigation for signup
+function showSignupPage(pageNum) {
+  document.getElementById('signup-page1').classList.remove('active');
+  document.getElementById('signup-page2').classList.remove('active');
+  document.getElementById('signup-page3').classList.remove('active');
+  document.getElementById(`signup-page${pageNum}`).classList.add('active');
+  
+  for (let i = 1; i <= 3; i++) {
+    const step = document.getElementById(`signup-step${i}`);
+    step.classList.remove('active', 'completed');
+    if (i < pageNum) step.classList.add('completed');
+    if (i === pageNum) step.classList.add('active');
+  }
+}
+
+// Validate Page 1
+function validateSignupPage1() {
+  const required = ['signup-title', 'signup-first-name', 'signup-last-name', 'signup-gender', 'signup-dob', 'signup-ssn', 'signup-phone', 'signup-email', 'signup-email-confirm', 'signup-address', 'signup-city', 'signup-state', 'signup-zip', 'signup-id-type', 'signup-id-number'];
+  let valid = true;
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.value.trim()) {
+      valid = false;
+      el.classList.add('invalid');
+    } else if (el) {
+      el.classList.remove('invalid');
+      el.classList.add('valid');
+    }
+  });
+  
+  const email = document.getElementById('signup-email').value;
+  const emailConfirm = document.getElementById('signup-email-confirm').value;
+  if (email !== emailConfirm) {
+    document.getElementById('signup-email-confirm').classList.add('invalid');
+    valid = false;
+  }
+  
+  if (!signupIdVerified) valid = false;
+  return valid;
+}
+
+// Validate Page 2
+function validateSignupPage2() {
+  const required = ['signup-employment', 'signup-income', 'signup-account-type', 'signup-username', 'signup-password', 'signup-password-confirm', 'signup-pin', 'signup-pin-confirm', 'signup-security-q', 'signup-security-a'];
+  let valid = true;
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.value.trim()) {
+      valid = false;
+      el.classList.add('invalid');
+    } else if (el) {
+      el.classList.remove('invalid');
+      el.classList.add('valid');
+    }
+  });
+  
+  const password = document.getElementById('signup-password').value;
+  const passwordConfirm = document.getElementById('signup-password-confirm').value;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (password !== passwordConfirm || !passwordRegex.test(password)) valid = false;
+  
+  const pin = document.getElementById('signup-pin').value;
+  const pinConfirm = document.getElementById('signup-pin-confirm').value;
+  if (pin !== pinConfirm || pin.length !== 6 || !/^\d+$/.test(pin)) valid = false;
+  
+  for (let i = 1; i <= 3; i++) {
+    if (!document.getElementById(`signup-consent${i}`).checked) valid = false;
+  }
+  return valid;
+}
+
+// Show review
+function showSignupReview() {
+  const getVal = (id) => document.getElementById(id)?.value || 'N/A';
+  const reviewDiv = document.getElementById('signup-review-content');
+  reviewDiv.innerHTML = `
+    <div class="signup-section">
+      <h3>Personal Information</h3>
+      <p><strong>Name:</strong> ${getVal('signup-title')} ${getVal('signup-first-name')} ${getVal('signup-last-name')}</p>
+      <p><strong>Email:</strong> ${getVal('signup-email')}</p>
+      <p><strong>Phone:</strong> ${getVal('signup-phone')}</p>
+      <p><strong>Address:</strong> ${getVal('signup-address')}, ${getVal('signup-city')}, ${getVal('signup-state')} ${getVal('signup-zip')}</p>
+    </div>
+    <div class="signup-section">
+      <h3>Account Preferences</h3>
+      <p><strong>Account Type:</strong> ${getVal('signup-account-type')}</p>
+      <p><strong>Username:</strong> ${getVal('signup-username')}</p>
+      <p><strong>Security Question:</strong> ${getVal('signup-security-q')}</p>
+    </div>
+  `;
+}
+
+// Generate account details
+function generateSignupAccount() {
+  const firstName = document.getElementById('signup-first-name').value;
+  const lastName = document.getElementById('signup-last-name').value;
+  const accountNumber = Math.floor(Math.random() * 900000000000 + 100000000000).toString();
+  const routingNumber = Math.floor(Math.random() * 900000000 + 100000000).toString();
+  const swiftCode = 'SBINUS' + Math.floor(Math.random() * 90 + 10);
+  const iban = 'US' + Math.floor(Math.random() * 900000000000000000 + 100000000000000000);
+  
+  return {
+    accountNumber, routingNumber, swiftCode, iban,
+    username: document.getElementById('signup-username').value,
+    password: document.getElementById('signup-password').value,
+    pin: document.getElementById('signup-pin').value,
+    fullName: `${firstName} ${lastName}`,
+    email: document.getElementById('signup-email').value,
+    phone: document.getElementById('signup-phone').value
+  };
+}
+
+// Save account
+function saveSignupAccount(account) {
+  const accounts = JSON.parse(localStorage.getItem('bankAccounts') || '[]');
+  accounts.push(account);
+  localStorage.setItem('bankAccounts', JSON.stringify(accounts));
+  
+  localStorage.setItem('autoFillUsername', account.username);
+  localStorage.setItem('autoFillPassword', account.password);
+  
+  const accountType = document.getElementById('signup-account-type').value;
+  const balances = { checking: 0, savings: 0 };
+  if (accountType === 'checking') balances.checking = 0;
+  else if (accountType === 'savings') balances.savings = 0;
+  else if (accountType === 'both') { balances.checking = 0; balances.savings = 0; }
+  localStorage.setItem('bankBalances', JSON.stringify(balances));
+  
+  return account;
+}
+
+// Submit account
+function submitSignupAccount() {
+  if (!validateSignupPage1() || !validateSignupPage2()) {
+    alert('Please complete all required fields correctly.');
+    return;
+  }
+  
+  const loadingDiv = document.getElementById('signup-loading');
+  loadingDiv.classList.add('active');
+  
+  const messages = ['Verifying your information...', 'Creating account number...', 'Setting up online banking...', 'Generating card details...', 'Almost there...'];
+  let idx = 0;
+  const msgInterval = setInterval(() => {
+    if (idx < messages.length) {
+      document.getElementById('signup-loading-msg').textContent = messages[idx];
+      idx++;
+    }
+  }, 3000);
+  
+  setTimeout(() => {
+    clearInterval(msgInterval);
+    const account = generateSignupAccount();
+    saveSignupAccount(account);
+    loadingDiv.classList.remove('active');
+    
+    alert(`✅ ACCOUNT CREATED SUCCESSFULLY!\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📋 ACCOUNT DETAILS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🏦 Account Number: ${account.accountNumber}\n🔢 Routing Number: ${account.routingNumber}\n🌍 SWIFT Code: ${account.swiftCode}\n🔑 IBAN: ${account.iban}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n🔐 LOGIN CREDENTIALS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n👤 Username: ${account.username}\n🔒 Password: ${account.password}\n🔢 Transaction PIN: ${account.pin}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n⚠️ PLEASE SAVE THESE CREDENTIALS SECURELY!`);
+    
+    const modal = document.getElementById('signup-modal');
+    if (modal) modal.classList.remove('show');
+    
+    document.getElementById('username').value = account.username;
+    document.getElementById('password').value = account.password;
+  }, 15000);
+}
+
+// ID Upload handlers
+function setupSignupIdUpload() {
+  const frontUpload = document.getElementById('signup-front-upload');
+  const backUpload = document.getElementById('signup-back-upload');
+  const frontInput = document.getElementById('signup-front-id');
+  const backInput = document.getElementById('signup-back-id');
+  const previewDiv = document.getElementById('signup-id-preview');
+  const idStatus = document.getElementById('signup-id-status');
+  
+  frontUpload.onclick = () => frontInput.click();
+  backUpload.onclick = () => backInput.click();
+  
+  frontInput.onchange = (e) => {
+    if (e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        signupFrontData = ev.target.result;
+        previewDiv.innerHTML += `<div class="signup-id-preview-item"><img src="${signupFrontData}" alt="Front"><div class="remove-id" onclick="this.parentElement.remove(); signupFrontData=null; signupIdVerified=false;">×</div><small>Front</small></div>`;
+        checkSignupVerification();
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+  
+  backInput.onchange = (e) => {
+    if (e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        signupBackData = ev.target.result;
+        previewDiv.innerHTML += `<div class="signup-id-preview-item"><img src="${signupBackData}" alt="Back"><div class="remove-id" onclick="this.parentElement.remove(); signupBackData=null; signupIdVerified=false;">×</div><small>Back</small></div>`;
+        checkSignupVerification();
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+  
+  function checkSignupVerification() {
+    if (signupFrontData && signupBackData) {
+      idStatus.style.display = 'flex';
+      setTimeout(() => {
+        signupIdVerified = true;
+        idStatus.style.display = 'none';
+        const badge = document.createElement('div');
+        badge.className = 'signup-verifying';
+        badge.style.background = '#d4edda';
+        badge.style.color = '#155724';
+        badge.innerHTML = '<i class="fas fa-check-circle"></i> ID Verified Successfully!';
+        previewDiv.appendChild(badge);
+        setTimeout(() => badge.remove(), 3000);
+        validateSignupPage1();
+      }, 6000);
+    }
+  }
+}
+
+// Initialize signup form event listeners
+function initSignupForm() {
+  document.getElementById('signup-next1').onclick = () => {
+    if (validateSignupPage1()) showSignupPage(2);
+    else alert('Please complete all required fields and verify your ID.');
+  };
+  document.getElementById('signup-back1').onclick = () => showSignupPage(1);
+  document.getElementById('signup-next2').onclick = () => {
+    if (validateSignupPage2()) {
+      showSignupReview();
+      showSignupPage(3);
+    } else {
+      alert('Please complete all fields, check password/PIN requirements, and accept all consents.');
+    }
+  };
+  document.getElementById('signup-back2').onclick = () => showSignupPage(2);
+  document.getElementById('signup-submit').onclick = submitSignupAccount;
+  
+  setupSignupIdUpload();
+}
+
+// Update signup link to open the new modal
+document.getElementById('signup-link').onclick = (e) => {
+  e.preventDefault();
+  initSignupForm();
+  document.getElementById('signup-modal').classList.add('show');
+};
+
+// Close modal
+document.getElementById('close-signup-modal').onclick = () => {
+  document.getElementById('signup-modal').classList.remove('show');
+};
 
 
     </script>
